@@ -109,7 +109,7 @@ const isActive = (path: string) => {
             SITE.showArchives && (
               <li class="col-span-3">
                 <LinkButton
-                  href={`${import.meta.env.BASE_URL}archives`}
+                  href="/archives"
                   class:list={[
                     "focus-outline flex justify-center p-3 sm:p-1",
                     {
@@ -127,7 +127,7 @@ const isActive = (path: string) => {
           }
           <li class="col-span-1 flex items-center justify-center">
             <LinkButton
-              href={`${import.meta.env.BASE_URL}search`}
+              href="/search"
               class:list={[
                 "focus-outline flex p-3 sm:p-1",
                 { "[&>svg]:stroke-accent": isActive("/search") },
