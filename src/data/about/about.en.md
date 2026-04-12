@@ -1,0 +1,40 @@
+---
+title: "关于我"
+---
+
+你好，我是 **vento** 👋
+
+一名来自 **河南科技学院** 信息工程专业的学生， **2027 年** 毕业。
+
+## 关于这个博客
+
+这里是我记录学习笔记、分享技术心得的地方。主要关注前端开发领域，包括但不限于：
+
+- Vue.js / React 等前端框架
+- JavaScript / TypeScript
+- 前端工程化与性能优化
+- 学习过程中的思考与总结
+- 以及我的一些思考和想法
+
+## 我的技术栈
+
+<div>
+  <img src="/dev.svg" class="sm:w-1/2 mx-auto" alt="coding dev illustration">
+</div>
+
+目前正在学习和深入掌握的技术：
+
+- **前端框架**：Vue 3、React
+- **后端语言**：node.js
+- **编程语言**：JavaScript、TypeScript
+- **构建工具**：Vite
+- **版本控制**：Git
+
+## 联系我
+
+如果你对我的文章有任何疑问，或者想一起交流技术，欢迎通过以下方式联系我：
+
+- GitHub: [vento](https://github.com/vento)
+- Email: 210567852@qq.com
+
+感谢你的访问，希望我的文章对你有所帮助！
