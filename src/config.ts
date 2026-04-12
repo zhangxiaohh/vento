@@ -1,5 +1,5 @@
 export const SITE = {
-  website: "https://astro-paper-i18n.netlify.app/", // replace this with your deployed domain
+  website: "https://zhangxiaohh.github.io/Myposts/", // GitHub Pages 部署地址
   author: "Yousef Elsayed",
   profile: "https://yousef8.github.io/astro-paper-i18n",
   ogImage: "astropaper-og.jpg",
