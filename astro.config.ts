@@ -13,7 +13,7 @@ import {
 // https://astro.build/config
 export default defineConfig({
   site: SITE.website,
-  base: "/Myposts/",
+  base: "/vento/",
   i18n: {
     locales: SUPPORTED_LOCALES,
     defaultLocale: DEFAULT_LOCALE,
