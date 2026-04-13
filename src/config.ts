@@ -1,5 +1,5 @@
 export const SITE = {
-  website: "https://zhangxiaohh.github.io/Myposts/", // GitHub Pages 部署地址
+  website: "https://zhangxiaohh.github.io/vento/", // GitHub Pages 部署地址
   author: "Yousef Elsayed",
   profile: "https://yousef8.github.io/astro-paper-i18n",
   ogImage: "astropaper-og.jpg",
