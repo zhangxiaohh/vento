@@ -1,0 +1,126 @@
+---
+import type { I18nStrings } from "@/i18n/types";
+import { translateFor } from "@/i18n/utils";
+import LinkButton from "./LinkButton.astro";
+import { SOCIALS } from "@/constants";
+
+export interface Props {
+  centered?: boolean;
+}
+
+const t = translateFor(Astro.currentLocale);
+
+const { centered = false } = Astro.props;
+---
+
+<div class:list={["flex-wrap justify-center gap-1", { flex: centered }]}>
+  {
+    SOCIALS.map(social => (
+      <>
+        {social.href ? (
+          <LinkButton
+            href={social.href}
+            class="p-2 hover:rotate-6 sm:p-1"
+            title={social.linkTitle(t)}
+          >
+            <social.icon class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110" />
+            <span class="sr-only">
+              {t(`socials.${social.name.toLowerCase()}` as keyof I18nStrings)}
+            </span>
+          </LinkButton>
+        ) : (
+          <button
+            type="button"
+            class="copy-btn focus-outline relative p-2 hover:rotate-6 sm:p-1 cursor-pointer bg-transparent border-none"
+            title={`${social.name}: ${social.copyValue} (点击复制)`}
+            data-copy-value={social.copyValue}
+            data-name={social.name}
+          >
+            <social.icon class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110" />
+            <span class="sr-only">
+              {social.name}
+            </span>
+            <span class="copy-tooltip absolute -top-8 left-1/2 -translate-x-1/2 bg-accent text-white text-xs px-2 py-1 rounded opacity-0 transition-opacity pointer-events-none whitespace-nowrap">
+              已复制!
+            </span>
+          </button>
+        )}
+      </>
+    ))
+  }
+</div>
+
+<style>
+  .copy-btn:hover .copy-tooltip {
+    opacity: 0;
+  }
+  .copy-btn.copied .copy-tooltip {
+    opacity: 1;
+  }
+</style>
+
+<script>
+  function initCopyButtons() {
+    const buttons = document.querySelectorAll('.copy-btn');
+    
+    buttons.forEach(btn => {
+      // 移除旧的事件监听器（如果存在）
+      const newBtn = btn.cloneNode(true) as HTMLElement;
+      btn.parentNode?.replaceChild(newBtn, btn);
+      
+      newBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const value = newBtn.getAttribute('data-copy-value');
+        const name = newBtn.getAttribute('data-name') || '';
+        
+        if (value) {
+          try {
+            // 尝试使用现代 Clipboard API
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              await navigator.clipboard.writeText(value);
+            } else {
+              // 降级方案：使用传统的复制方法
+              const textArea = document.createElement('textarea');
+              textArea.value = value;
+              textArea.style.position = 'fixed';
+              textArea.style.left = '-9999px';
+              document.body.appendChild(textArea);
+              textArea.select();
+              document.execCommand('copy');
+              document.body.removeChild(textArea);
+            }
+            
+            // 显示复制成功提示
+            const tooltip = newBtn.querySelector('.copy-tooltip');
+            if (tooltip) {
+              tooltip.textContent = `${name} 已复制!`;
+              newBtn.classList.add('copied');
+              
+              setTimeout(() => {
+                newBtn.classList.remove('copied');
+              }, 2000);
+            }
+            
+            console.log(`已复制 ${name}: ${value}`);
+          } catch (err) {
+            console.error('复制失败:', err);
+            alert(`复制失败，请手动复制: ${value}`);
+          }
+        }
+      });
+    });
+  }
+  
+  // 初始加载
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCopyButtons);
+  } else {
+    initCopyButtons();
+  }
+  
+  // Astro 页面加载事件
+  document.addEventListener('astro:page-load', initCopyButtons);
+  document.addEventListener('astro:after-swap', initCopyButtons);
+</script>

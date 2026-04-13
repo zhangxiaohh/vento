@@ -1,0 +1,150 @@
+---
+interface Props {
+  texts: string[];
+  typingSpeed?: number;
+  deleteSpeed?: number;
+  pauseTime?: number;
+  class?: string;
+}
+
+const { 
+  texts, 
+  typingSpeed = 100, 
+  deleteSpeed = 50, 
+  pauseTime = 2000,
+  class: className = ""
+} = Astro.props;
+
+// 将数组转换为 JSON 字符串
+const textsJson = JSON.stringify(texts);
+---
+
+<span 
+  class={`typewriter ${className}`}
+  data-texts={textsJson}
+  data-typing-speed={typingSpeed}
+  data-delete-speed={deleteSpeed}
+  data-pause-time={pauseTime}
+>
+  <span class="typewriter-text"></span>
+  <span class="typewriter-cursor">|</span>
+</span>
+
+<style>
+  .typewriter {
+    display: inline;
+  }
+  
+  .typewriter-text {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.8;
+  }
+  
+  .typewriter-cursor {
+    display: inline-block;
+    font-weight: 100;
+    animation: blink 1s step-end infinite;
+    margin-left: 2px;
+  }
+  
+  @keyframes blink {
+    0%, 50% {
+      opacity: 1;
+    }
+    51%, 100% {
+      opacity: 0;
+    }
+  }
+</style>
+
+<script>
+  class TypeWriter {
+    element: HTMLElement;
+    texts: string[];
+    typingSpeed: number;
+    deleteSpeed: number;
+    pauseTime: number;
+    textElement: HTMLElement;
+    cursorElement: HTMLElement;
+    
+    currentTextIndex = 0;
+    currentCharIndex = 0;
+    isDeleting = false;
+    isPaused = false;
+    
+    constructor(element: HTMLElement) {
+      this.element = element;
+      this.texts = JSON.parse(element.dataset.texts || "[]");
+      this.typingSpeed = parseInt(element.dataset.typingSpeed || "100");
+      this.deleteSpeed = parseInt(element.dataset.deleteSpeed || "50");
+      this.pauseTime = parseInt(element.dataset.pauseTime || "2000");
+      
+      this.textElement = element.querySelector('.typewriter-text') as HTMLElement;
+      this.cursorElement = element.querySelector('.typewriter-cursor') as HTMLElement;
+      
+      this.init();
+    }
+    
+    init() {
+      if (this.texts.length === 0) return;
+      this.type();
+    }
+    
+    type() {
+      const currentText = this.texts[this.currentTextIndex];
+      
+      if (this.isPaused) {
+        setTimeout(() => {
+          this.isPaused = false;
+          this.isDeleting = true;
+          this.type();
+        }, this.pauseTime);
+        return;
+      }
+      
+      if (this.isDeleting) {
+        this.currentCharIndex--;
+        this.textElement.textContent = currentText.substring(0, this.currentCharIndex);
+        
+        if (this.currentCharIndex === 0) {
+          this.isDeleting = false;
+          this.currentTextIndex = (this.currentTextIndex + 1) % this.texts.length;
+        }
+        
+        setTimeout(() => this.type(), this.deleteSpeed);
+      } else {
+        this.currentCharIndex++;
+        
+        // 使用 Intl.Segmenter 处理中文、英文和表情符号
+        const segmenter = new Intl.Segmenter('zh', { granularity: 'grapheme' });
+        const segments = Array.from(segmenter.segment(currentText));
+        const visibleText = segments.slice(0, this.currentCharIndex).map(s => s.segment).join('');
+        
+        this.textElement.textContent = visibleText;
+        
+        if (this.currentCharIndex >= segments.length) {
+          this.isPaused = true;
+        }
+        
+        setTimeout(() => this.type(), this.typingSpeed);
+      }
+    }
+  }
+  
+  function initTypeWriters() {
+    const elements = document.querySelectorAll('.typewriter');
+    elements.forEach(el => {
+      new TypeWriter(el as HTMLElement);
+    });
+  }
+  
+  // 初始加载
+  initTypeWriters();
+  
+  // Astro 页面加载事件
+  document.addEventListener('astro:page-load', initTypeWriters);
+  
+  // 兼容 Swup 无刷新跳转
+  document.addEventListener('swup:contentReplaced', initTypeWriters);
+</script>
