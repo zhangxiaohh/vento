@@ -13,6 +13,7 @@ import "@/styles/global.css";
 const t = translateFor(Astro.currentLocale);
 
 const LOCALE = getLocaleInfo(Astro.currentLocale);
+const BASE_URL = import.meta.env.BASE_URL;
 
 export interface Props {
   title?: string;
@@ -66,7 +67,7 @@ const structuredData = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+    <link rel="icon" type="image/svg+xml" href={`${BASE_URL}favicon.svg`} />
     <link rel="canonical" href={canonicalURL} />
     <meta name="generator" content={Astro.generator} />
 
@@ -75,7 +76,7 @@ const structuredData = {
     <meta name="title" content={title} />
     <meta name="description" content={description} />
     <meta name="author" content={author} />
-    <link rel="sitemap" href={`${import.meta.env.BASE_URL}sitemap-index.xml`} />
+    <link rel="sitemap" href={`${BASE_URL}sitemap-index.xml`} />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:title" content={title} />
@@ -134,7 +135,7 @@ const structuredData = {
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
           <link
-            href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&display=swap"
+            href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght={100;200;300;400;500;600;700&display=swap"
             rel="preload"
             as="style"
             onload="this.onload=null; this.rel='stylesheet';"
@@ -160,7 +161,7 @@ const structuredData = {
 
     <!-- <ClientRouter /> -->
 
-    <script is:inline src={`${import.meta.env.BASE_URL}toggle-theme.js`}></script>
+    <script is:inline src={`${BASE_URL}toggle-theme.js`}></script>
     
     <!-- mouse-firework 粒子爆炸特效 -->
     <script>
@@ -202,6 +203,16 @@ const structuredData = {
   </head>
   <body>
     <slot />
+    
+    <!-- oneko.js 猫猫跟随鼠标特效 -->
+    <script is:inline data-neko-cat={`${BASE_URL}oneko.gif`}>
+      const onekoScript = document.createElement('script');
+      onekoScript.src = 'https://cdn.jsdelivr.net/gh/adryd325/oneko.js@main/oneko.js';
+      const currentScript = document.currentScript;
+      const catUrl = currentScript.getAttribute('data-neko-cat');
+      onekoScript.setAttribute('data-cat', catUrl);
+      document.body.appendChild(onekoScript);
+    </script>
   </body>
 </html>
 

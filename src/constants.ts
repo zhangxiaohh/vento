@@ -1,12 +1,7 @@
-import IconBrandX from "@/assets/icons/IconBrandX.svg";
-import IconFacebook from "@/assets/icons/IconFacebook.svg";
 import IconGitHub from "@/assets/icons/IconGitHub.svg";
 import IconMail from "@/assets/icons/IconMail.svg";
-import IconPinterest from "@/assets/icons/IconPinterest.svg";
 import IconQQ from "@/assets/icons/IconQQ.svg";
-import IconTelegram from "@/assets/icons/IconTelegram.svg";
 import IconWechat from "@/assets/icons/IconWechat.svg";
-import IconWhatsapp from "@/assets/icons/IconWhatsapp.svg";
 import { translateFor } from "@/i18n/utils";
 import type { Props } from "astro";
 
@@ -49,39 +44,21 @@ export const SOCIALS: Social[] = [
 
 export const SHARE_LINKS: Social[] = [
   {
-    name: "WhatsApp",
-    href: "https://wa.me/?text=",
-    linkTitle: (t: Translator) => t("sharePost.via", { media: "WhatsApp" }),
-    icon: IconWhatsapp,
+    name: "复制链接",
+    href: "javascript:(function(){navigator.clipboard.writeText(window.location.href);alert('链接已复制，粘贴到微信发送给朋友吧！');})();",
+    linkTitle: (t: Translator) => { void t; return "复制链接分享"; },
+    icon: IconWechat,
   },
   {
-    name: "Facebook",
-    href: "https://www.facebook.com/sharer.php?u=",
-    linkTitle: (t: Translator) => t("sharePost.on", { media: "Facebook" }),
-    icon: IconFacebook,
+    name: "QQ",
+    href: "https://connect.qq.com/widget/shareqq/index.html?url=",
+    linkTitle: (t: Translator) => { void t; return "分享到QQ"; },
+    icon: IconQQ,
   },
   {
-    name: "X",
-    href: "https://x.com/intent/post?url=",
-    linkTitle: (t: Translator) => t("sharePost.on", { media: "X" }),
-    icon: IconBrandX,
-  },
-  {
-    name: "Telegram",
-    href: "https://t.me/share/url?url=",
-    linkTitle: (t: Translator) => t("sharePost.via", { media: "Telegram" }),
-    icon: IconTelegram,
-  },
-  {
-    name: "Pinterest",
-    href: "https://pinterest.com/pin/create/button/?url=",
-    linkTitle: (t: Translator) => t("sharePost.on", { media: "Pinterest" }),
-    icon: IconPinterest,
-  },
-  {
-    name: "Mail",
-    href: "mailto:?subject=Check%20this%20out&body=",
-    linkTitle: (t: Translator) => t("sharePost.via", { media: "Mail" }),
+    name: "邮件",
+    href: "mailto:?subject=来看看这篇有趣的文章&body=我发现了一篇很棒的文章，分享给你：",
+    linkTitle: (t: Translator) => { void t; return "通过邮件分享"; },
     icon: IconMail,
   },
-] as const;
+];

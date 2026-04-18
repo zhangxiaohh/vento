@@ -18,10 +18,6 @@ title: "关于我"
 
 ## 我的技术栈
 
-<div>
-  <img src="./dev.svg" class="sm:w-1/2 mx-auto" alt="coding dev illustration">
-</div>
-
 目前正在学习和深入掌握的技术：
 
 - **前端框架**：Vue 3、React

@@ -1,5 +1,7 @@
 import type { I18nStrings } from "./types";
 import ENLocale from "./locales/en";
+import ZHLocale from "./locales/zh";
+import ARLocale from "./locales/ar";
 
 export type LocaleProfile = {
   name: string;
@@ -21,6 +23,20 @@ export const localeToProfile = {
     direction: "ltr",
     googleFontName: "IBM+Plex+Mono",
     default: true,
+  },
+  zh: {
+    name: "简体中文",
+    messages: ZHLocale,
+    langTag: "zh-CN",
+    direction: "ltr",
+    googleFontName: "Noto+Sans+SC",
+  },
+  ar: {
+    name: "العربية",
+    messages: ARLocale,
+    langTag: "ar-EG",
+    direction: "rtl",
+    googleFontName: "IBM+Plex+Sans+Arabic",
   },
 } satisfies Record<string, LocaleProfile>;
 

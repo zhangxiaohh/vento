@@ -46,7 +46,7 @@ AI 读完，原来 "他" = 小明，这就叫注意力机制。
 
 通用人工智能（AGI）是一种人工智能形式，在每项任务中都能比人类表现得更好。他们对世界有广泛而普遍的理解，可以自己进行一定程度的思考和推理，允许在无人监督的情况下进行现实世界的行动。
 
-![AGI五层架构](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/eYVOL5jDJXJYNlpz/img/a5cb1334-8d6a-4cca-8fc6-ba25920135d7.png)
+![AGI五层架构](public\images\AI\1.png)
 
 - 第 1 层：聊天机器人
 
@@ -72,7 +72,7 @@ AI 读完，原来 "他" = 小明，这就叫注意力机制。
 
 就问下面这些提示词你有没有说过？🤣🤣🤣
 
-![常见提示词](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/eYVOL5jDJXJYNlpz/img/52f0f3d0-23ae-40f5-87e2-e508cdfb668a.png)
+![常见提示词](public\images\AI\2.png)
 
 ### 1、需不需要学习Prompt
 
@@ -141,11 +141,11 @@ AI 读完，原来 "他" = 小明，这就叫注意力机制。
 
 直接问的情况：（这时候你不知道他会直接修改哪些文件，这是一个完全黑盒的形式，你自己提的需求你自己也不明白，因为你考虑的也不是很全面）
 
-![直接问的情况](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/eYVOL5jDJXJYNlpz/img/c451b88f-4331-45a9-8e55-e0136c569cf9.png)
+![直接问的情况](public\images\AI\3.png)
 
 于是，两种模式诞生了，spec 或者 plan 就是通过文档来与你对齐需求，让 AI 按照文档驱动开发，保证准确度
 
-![spec和plan](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/eYVOL5jDJXJYNlpz/img/be2a460b-f85b-4fcb-933b-e6630a687cec.png)
+![spec和plan](public\images\AI\4.png)
 
 #### spec和plan 的区别
 
@@ -155,7 +155,7 @@ Spec和Plan两种模式的区别
 - Plan 重计划，偏粗粒度，最大的作用是帮你把需求和实现对明白
 - Spec 的能力 包括了 Plan，也就是 Spec 可以代替 Plan
 
-![区别对比](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/eYVOL5jDJXJYNlpz/img/3909abe5-c80f-44d5-90ba-b36e9b4ae7a0.png)
+![区别对比](public\images\AI\5.png)
 
 ### 增量开发而不是一次性生成
 

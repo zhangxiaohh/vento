@@ -53,7 +53,7 @@ const CNLocale: I18nStrings = {
   toggleLightAndDark: "切换浅色/深色模式",
   "pagination.prev": "上一页",
   "pagination.next": "下一页",
-  "footer.text": "版权所有 © {year} | 保留所有权利",
+  "footer.text": "Copyright © 2026 Vento | All rights reserved",
   "date.published": "发布于",
   "date.updated": "更新于",
   "date.month.1": "一月",

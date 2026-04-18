@@ -55,7 +55,7 @@ const ENLocale: I18nStrings = {
   toggleLightAndDark: "Toggles light & dark",
   "pagination.prev": "Prev",
   "pagination.next": "Next",
-  "footer.text": "Copyright © {year} | All rights reserved",
+  "footer.text": "Copyright © 2026 Vento | All rights reserved",
   "date.published": "Published",
   "date.updated": "Updated",
   "date.month.1": "January",

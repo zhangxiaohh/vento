@@ -12,7 +12,7 @@ tags:
   - 前端
   - React
 description: 
-  这是我的我学习react钩子的一个对比。
+  这是我的我学习react组件通信的一个输出。
 ---
 
 ### 父子间组件通信：
