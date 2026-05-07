@@ -4,7 +4,7 @@ pubDatetime: 2026-01-24T00:00:00Z
 modDatetime: 2026-01-24T00:00:00Z
 title: Typescript——泛型
 slug: typescript-generics
-featured: true      
+featured: false      
 draft: false
 tags:
   - 随笔

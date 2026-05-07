@@ -4,7 +4,7 @@ pubDatetime: 2026-04-10T00:00:00Z
 modDatetime: 2026-04-10T00:00:00Z
 title: AI编码技巧分享
 slug: ai-coding-tips
-featured: false
+featured: true
 draft: false
 tags:
   - 随笔
