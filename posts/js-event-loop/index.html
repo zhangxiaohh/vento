@@ -1,0 +1,603 @@
+<!DOCTYPE html><html lang="en" class="scroll-smooth" dir="ltr" data-astro-cid-sckkx6r4> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><link rel="icon" type="image/svg+xml" href="/vento/favicon.svg"><link rel="canonical" href="https://zhangxiaohh.github.io/vento/posts/js-event-loop/"><meta name="generator" content="Astro v5.16.5"><!-- General Meta Tags --><title>JS中的事件循环（Event Loop） | vento</title><meta name="title" content="JS中的事件循环（Event Loop） | vento"><meta name="description" content="深入理解 JavaScript 事件循环机制，包括同步/异步任务、宏任务/微任务、调用栈与任务队列等核心概念。"><meta name="author" content="vento"><link rel="sitemap" href="/vento/sitemap-index.xml"><!-- Open Graph / Facebook --><meta property="og:title" content="JS中的事件循环（Event Loop） | vento"><meta property="og:description" content="深入理解 JavaScript 事件循环机制，包括同步/异步任务、宏任务/微任务、调用栈与任务队列等核心概念。"><meta property="og:url" content="https://zhangxiaohh.github.io/vento/posts/js-event-loop/"><meta property="og:image" content="https://zhangxiaohh.github.io/vento/posts/js-event-loop/index.png"><!-- Article Published/Modified time --><meta property="article:published_time" content="2025-09-27T00:00:00.000Z"><meta property="article:modified_time" content="2025-09-27T00:00:00.000Z"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://zhangxiaohh.github.io/vento/posts/js-event-loop/"><meta property="twitter:title" content="JS中的事件循环（Event Loop） | vento"><meta property="twitter:description" content="深入理解 JavaScript 事件循环机制，包括同步/异步任务、宏任务/微任务、调用栈与任务队列等核心概念。"><meta property="twitter:image" content="https://zhangxiaohh.github.io/vento/posts/js-event-loop/index.png"><!-- Google JSON-LD Structured data --><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"JS中的事件循环（Event Loop） | vento","image":"https://zhangxiaohh.github.io/vento/posts/js-event-loop/index.png","datePublished":"2025-09-27T00:00:00.000Z","dateModified":"2025-09-27T00:00:00.000Z","author":[{"@type":"Person","name":"vento","url":"https://yousef8.github.io/astro-paper-i18n"}]}</script><!-- Enable RSS feed auto-discovery  --><!-- https://docs.astro.build/en/recipes/rss/#enabling-rss-feed-auto-discovery --><link rel="alternate" type="application/rss+xml" title="vento" href="https://zhangxiaohh.github.io/vento/rss.xml"><!-- Google Font --><meta name="theme-color" content=""><!-- <ClientRouter /> --><script src="/vento/toggle-theme.js"></script><!-- mouse-firework 粒子爆炸特效 --><script type="module">document.addEventListener("DOMContentLoaded",function(){const e=document.createElement("script");e.src="https://www.unpkg.com/mouse-firework@latest/dist/index.umd.js",e.onload=function(){typeof firework=="function"&&firework({excludeElements:["a","button","input","textarea","select"],particles:[{shape:"circle",move:"emit",easing:"easeOutExpo",colors:["rgba(255,182,185,.9)","rgba(250,227,217,.9)","rgba(187,222,214,.9)","rgba(138,198,209,.9)","rgba(255,218,185,.9)","rgba(221,160,221,.9)"],number:30,duration:[1200,1800],shapeOptions:{radius:[8,20]}}]})},document.head.appendChild(e)});</script><link rel="stylesheet" href="/vento/astro-assets/about-MyGwzdDO.css">
+<style>@keyframes astroFadeInOut{0%{opacity:1}to{opacity:0}}@keyframes astroFadeIn{0%{opacity:0;mix-blend-mode:plus-lighter}to{opacity:1;mix-blend-mode:plus-lighter}}@keyframes astroFadeOut{0%{opacity:1;mix-blend-mode:plus-lighter}to{opacity:0;mix-blend-mode:plus-lighter}}@keyframes astroSlideFromRight{0%{transform:translate(100%)}}@keyframes astroSlideFromLeft{0%{transform:translate(-100%)}}@keyframes astroSlideToRight{to{transform:translate(100%)}}@keyframes astroSlideToLeft{to{transform:translate(-100%)}}@media(prefers-reduced-motion){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}[data-astro-transition-scope]{animation:none!important}}
+article[data-astro-cid-vj4tpspi] pre{direction:ltr;text-align:left}
+:where([data-astro-image]){object-fit:var(--fit);object-position:var(--pos);height:auto}:where([data-astro-image=full-width]){width:100%}:where([data-astro-image=constrained]){max-width:100%}
+</style><style>[data-astro-transition-scope="astro-fam6wyqg-1"] { view-transition-name: js\4E2D\7684\4E8B\4EF6\5FAA\73AF\FF08-event-loop\FF09; }@layer astro { ::view-transition-old(js\4E2D\7684\4E8B\4EF6\5FAA\73AF\FF08-event-loop\FF09) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(js\4E2D\7684\4E8B\4EF6\5FAA\73AF\FF08-event-loop\FF09) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(js\4E2D\7684\4E8B\4EF6\5FAA\73AF\FF08-event-loop\FF09) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(js\4E2D\7684\4E8B\4EF6\5FAA\73AF\FF08-event-loop\FF09) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-fam6wyqg-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-fam6wyqg-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-fam6wyqg-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-fam6wyqg-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-fam6wyqg-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-fam6wyqg-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-fam6wyqg-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-fam6wyqg-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-36ssibgs-2"] { view-transition-name: \968F\7B14; }@layer astro { ::view-transition-old(\968F\7B14) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(\968F\7B14) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(\968F\7B14) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(\968F\7B14) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-2"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-2"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-36ssibgs-3"] { view-transition-name: java-script; }@layer astro { ::view-transition-old(java-script) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(java-script) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(java-script) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(java-script) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-3"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-3"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-36ssibgs-4"] { view-transition-name: \524D\7AEF; }@layer astro { ::view-transition-old(\524D\7AEF) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(\524D\7AEF) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(\524D\7AEF) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(\524D\7AEF) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-4"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-4"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-36ssibgs-5"] { view-transition-name: \5F02\6B65\7F16\7A0B; }@layer astro { ::view-transition-old(\5F02\6B65\7F16\7A0B) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(\5F02\6B65\7F16\7A0B) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(\5F02\6B65\7F16\7A0B) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(\5F02\6B65\7F16\7A0B) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-5"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-5"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head> <body data-astro-cid-sckkx6r4>  <header> <a id="skip-to-content" href="#main-content" class="absolute start-16 -top-full z-50 bg-background px-3 py-2 text-accent backdrop-blur-lg transition-all focus:top-4"> Skip to content </a> <div id="nav-container" class="mx-auto flex max-w-app flex-col items-center justify-between sm:flex-row"> <div id="top-nav-wrap" class="relative flex w-full items-baseline justify-between bg-background p-4 sm:items-center sm:py-6"> <a href="/vento/" class="absolute flex items-center gap-2 py-1 text-xl leading-8 font-semibold whitespace-nowrap sm:static sm:my-auto sm:text-2xl sm:leading-none"> <img src="/vento/avatar.jpg" alt="avatar" class="h-8 w-8 rounded-full object-cover sm:h-10 sm:w-10" onerror="this.style.display='none'"> <span class="text-base sm:text-lg">vento</span> </a> <nav id="nav-menu" class="flex w-full flex-col items-center sm:ms-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0"> <button id="menu-btn" class="focus-outline self-end p-2 sm:hidden" aria-label="Open Menu" aria-expanded="false" aria-controls="menu-items" data-open-text="Open Menu" data-close-text="Close Menu"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden" id="close-icon"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-menu-deep" id="menu-icon"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 6h16" /><path d="M7 12h13" /><path d="M10 18h10" /></svg> </button> <ul id="menu-items" class="mt-4 grid w-44 grid-cols-3 place-content-center gap-2 [&#38;>li>a]:block [&#38;>li>a]:px-4 [&#38;>li>a]:py-3 [&#38;>li>a]:text-center [&#38;>li>a]:font-medium [&#38;>li>a]:hover:text-accent sm:[&#38;>li>a]:px-2 sm:[&#38;>li>a]:py-1 hidden sm:ms-0 sm:mt-0 sm:flex sm:w-auto sm:gap-x-5 sm:gap-y-0"> <li class="col-span-3"> <a href="/vento/posts/"> Posts </a> </li> <li class="col-span-3"> <a href="/vento/tags/"> Tags </a> </li> <li class="col-span-3"> <a href="/vento/about"> About </a> </li> <li class="col-span-3"> <a href="/vento/archives" class="group inline-block hover:text-accent focus-outline flex justify-center p-3 sm:p-1" aria-label="archives" title="   Archives"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden sm:inline-block"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M3 4m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" /><path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" /><path d="M10 12l4 0" /></svg> <span class="sm:sr-only">Archives</span> </a> </li> <li class="col-span-1 flex items-center justify-center"> <a href="/vento/search" class="group inline-block hover:text-accent focus-outline flex p-3 sm:p-1" aria-label="search" title=" Search"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-search"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg> <span class="sr-only">Search</span> </a> </li> <li class="col-span-1 flex items-center justify-center"> <button id="theme-btn" class="focus-outline relative size-12 p-4 sm:size-8 hover:[&>svg]:stroke-accent" title="Toggles light & dark" aria-label="auto" aria-live="polite"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute top-[50%] left-[50%] -translate-[50%] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" /></svg> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute top-[50%] left-[50%] -translate-[50%] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M14.828 14.828a4 4 0 1 0 -5.656 -5.656a4 4 0 0 0 5.656 5.656z" /><path d="M6.343 17.657l-1.414 1.414" /><path d="M6.343 6.343l-1.414 -1.414" /><path d="M17.657 6.343l1.414 -1.414" /><path d="M17.657 17.657l1.414 1.414" /><path d="M4 12h-2" /><path d="M12 4v-2" /><path d="M20 12h2" /><path d="M12 20v2" /></svg> </button> </li> </ul> </nav> </div> </div> <div class="mx-auto max-w-app px-4"> <hr class="border-border" aria-hidden="true"> </div> </header> <script type="module">function c(){const e=document.querySelector("#menu-btn"),t=document.querySelector("#menu-items"),n=document.querySelector("#menu-icon"),o=document.querySelector("#close-icon"),u=e?.dataset.openText||"Open Menu",a=e?.dataset.closeText||"Close Menu";!e||!t||!n||!o||e.addEventListener("click",()=>{const s=e.getAttribute("aria-expanded")==="true";e.setAttribute("aria-expanded",s?"false":"true"),e.setAttribute("aria-label",s?u:a),t.classList.toggle("hidden"),n.classList.toggle("hidden"),o.classList.toggle("hidden")})}c();document.addEventListener("astro:after-swap",c);</script> <div class="mx-auto flex w-full max-w-app items-center justify-start px-2"><a id="back-button" href="/vento/" class="group inline-block hover:text-accent focus-outline mt-8 mb-2 flex hover:text-foreground/75"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 rtl:rotate-180"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M15 6l-6 6l6 6" /></svg><span>Go back</span></a></div><script type="module">function o(){const t=document.querySelector("#back-button"),e=sessionStorage.getItem("backUrl");e&&t&&(t.href=e)}document.addEventListener("astro:page-load",o);o();</script> <main id="main-content" class="mx-auto w-full max-w-app px-4 pb-12" data-pagefind-body data-copy-string="copy" data-copied-string="copied" data-astro-cid-vj4tpspi> <h1 class="inline-block text-2xl font-bold text-accent sm:text-3xl" data-astro-cid-vj4tpspi data-astro-transition-scope="astro-fam6wyqg-1"> JS中的事件循环（Event Loop） </h1> <div class="flex items-center gap-4" data-astro-cid-vj4tpspi> <div class="flex items-end space-x-2 opacity-80 my-2"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 min-w-[1.375rem]"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" /><path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M7 14h.013" /><path d="M10.01 14h.005" /><path d="M13.01 14h.005" /><path d="M16.015 14h.005" /><path d="M13.015 17h.005" /><path d="M7.01 17h.005" /><path d="M10.01 17h.005" /></svg> <span class="sr-only">Published:</span> <span class="text-sm italic sm:text-base"> <time datetime="2025-09-27T07:00:00.000+07:00">Sep 27, 2025</time> <span aria-hidden="true"> | </span> <span class="sr-only">&nbsp;at&nbsp;</span> <span class="text-nowrap">7:00 AM</span> </span> </div> <div class="opacity-80 max-sm:hidden"><span aria-hidden="true" class="max-sm:hidden">
+|
+</span><a class="space-x-1.5 hover:opacity-75" href="https://github.com/yousef8/astro-paper-i18n/edit/main/src/data/blog/en/事件循环.md" rel="noopener noreferrer" target="_blank"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" /><path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" /><path d="M16 5l3 3" /></svg><span class="italic max-sm:text-sm sm:inline">Suggest Changes</span></a></div> </div> <article id="article" class="mx-auto prose mt-8 max-w-app" data-astro-cid-vj4tpspi> <h2 id="一前言">一、前言</h2>
+<p>浏览器有两个引擎：一个是渲染引擎用来渲染 HTML 和 CSS，一个是 JS 解释器。那么 JS 到底是如何执行的呢？本次分享会我想带大家了解 JS 代码的执行机制，也就是事件循环，以及加深关于调用栈、任务队列等概念的理解。</p>
+<h2 id="二问题的引入">二、问题的引入</h2>
+<p>提问以下代码的执行顺序：</p>
+<pre class="astro-code astro-code-themes min-light night-owl" style="background-color:#ffffff;--shiki-dark-bg:#011627;color:#24292eff;--shiki-dark:#d6deeb; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#24292EFF;--shiki-dark:#7FDBCA">&#x3C;</span><span style="color:#22863A;--shiki-dark:#CAECE6">script</span><span style="color:#24292EFF;--shiki-dark:#7FDBCA">></span></span>
+<span class="line"><span style="color:#D32F2F;--shiki-dark:#C792EA">  const</span><span style="color:#1976D2;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic"> aaa</span><span style="color:#D32F2F;--shiki-dark:#C792EA"> =</span><span style="color:#22863A;--shiki-dark:#D9F5DD"> '</span><span style="color:#22863A;--shiki-dark:#ECC48D">aaa</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span></span>
+<span class="line"><span style="color:#D32F2F;--shiki-dark:#C792EA">  const</span><span style="color:#1976D2;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic"> bbb</span><span style="color:#D32F2F;--shiki-dark:#C792EA"> =</span><span style="color:#22863A;--shiki-dark:#D9F5DD"> '</span><span style="color:#22863A;--shiki-dark:#ECC48D">bbb</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span></span>
+<span class="line"><span style="color:#D32F2F;--shiki-dark:#C792EA">  const</span><span style="color:#1976D2;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic"> ccc</span><span style="color:#D32F2F;--shiki-dark:#C792EA"> =</span><span style="color:#22863A;--shiki-dark:#D9F5DD"> '</span><span style="color:#22863A;--shiki-dark:#ECC48D">ccc</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span></span>
+<span class="line"><span style="color:#D32F2F;--shiki-dark:#C792EA">  const</span><span style="color:#1976D2;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic"> ddd</span><span style="color:#D32F2F;--shiki-dark:#C792EA"> =</span><span style="color:#22863A;--shiki-dark:#D9F5DD"> '</span><span style="color:#22863A;--shiki-dark:#ECC48D">ddd</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span></span>
+<span class="line"><span style="color:#D32F2F;--shiki-dark:#C792EA">  const</span><span style="color:#1976D2;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic"> eee</span><span style="color:#D32F2F;--shiki-dark:#C792EA"> =</span><span style="color:#22863A;--shiki-dark:#D9F5DD"> '</span><span style="color:#22863A;--shiki-dark:#ECC48D">eee</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#24292EFF;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic"> </span></span>
+<span class="line"><span style="color:#1976D2;--shiki-light-font-style:inherit;--shiki-dark:#7FDBCA;--shiki-dark-font-style:italic">  console</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">.</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">log</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#24292EFF;--shiki-dark:#D7DBE0">aaa</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">)</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">  setTimeout</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#D32F2F;--shiki-dark:#C792EA">function</span><span style="color:#24292EFF;--shiki-dark:#D9F5DD">()</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">{</span></span>
+<span class="line"><span style="color:#1976D2;--shiki-light-font-style:inherit;--shiki-dark:#7FDBCA;--shiki-dark-font-style:italic">    console</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">.</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">log</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#24292EFF;--shiki-dark:#D7DBE0">bbb</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">)</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">  }</span><span style="color:#212121;--shiki-dark:#D6DEEB">,</span><span style="color:#1976D2;--shiki-dark:#F78C6C"> 1000</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">)</span></span>
+<span class="line"><span style="color:#1976D2;--shiki-light-font-style:inherit;--shiki-dark:#7FDBCA;--shiki-dark-font-style:italic">  console</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">.</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">log</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#24292EFF;--shiki-dark:#D7DBE0">ccc</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">)</span></span>
+<span class="line"><span style="color:#1976D2;--shiki-light-font-style:inherit;--shiki-dark:#7FDBCA;--shiki-dark-font-style:italic">  document</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">.</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">addEventListener</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#22863A;--shiki-dark:#ECC48D">click</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#212121;--shiki-dark:#D6DEEB">,</span><span style="color:#D32F2F;--shiki-dark:#C792EA"> function</span><span style="color:#24292EFF;--shiki-dark:#D9F5DD">()</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">{</span></span>
+<span class="line"><span style="color:#1976D2;--shiki-light-font-style:inherit;--shiki-dark:#7FDBCA;--shiki-dark-font-style:italic">    console</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">.</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">log</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#24292EFF;--shiki-dark:#D7DBE0">ddd</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">)</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">  })</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">  setTimeout</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#D32F2F;--shiki-dark:#C792EA">function</span><span style="color:#24292EFF;--shiki-dark:#D9F5DD">()</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">{</span></span>
+<span class="line"><span style="color:#1976D2;--shiki-light-font-style:inherit;--shiki-dark:#7FDBCA;--shiki-dark-font-style:italic">    console</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">.</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">log</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#24292EFF;--shiki-dark:#D7DBE0">eee</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">)</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">  }</span><span style="color:#212121;--shiki-dark:#D6DEEB">,</span><span style="color:#1976D2;--shiki-dark:#F78C6C"> 0</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">)</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#7FDBCA">&#x3C;/</span><span style="color:#22863A;--shiki-dark:#CAECE6">script</span><span style="color:#24292EFF;--shiki-dark:#7FDBCA">></span></span></code></pre>
+<h2 id="三知识准备">三、知识准备</h2>
+<h3 id="31-同步任务和异步任务">3.1 同步任务和异步任务</h3>
+<h4 id="311-同步只做一件事一直往下进行">3.1.1 同步（“只做一件事，一直往下进行”）</h4>
+<p><img src="https://pic3.zhimg.com/v2-a6d7f04a6fda1c87d884232beaa2a49a_r.jpg" alt=""></p>
+<pre class="astro-code astro-code-themes min-light night-owl" style="background-color:#ffffff;--shiki-dark-bg:#011627;color:#24292eff;--shiki-dark:#d6deeb; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#D32F2F;--shiki-dark:#C792EA">let</span><span style="color:#24292EFF;--shiki-dark:#D7DBE0"> a</span><span style="color:#D32F2F;--shiki-dark:#C792EA"> =</span><span style="color:#1976D2;--shiki-dark:#F78C6C"> 1</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">;</span></span>
+<span class="line"><span style="color:#1976D2;--shiki-light-font-style:inherit;--shiki-dark:#7FDBCA;--shiki-dark-font-style:italic">console</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">.</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">log</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#22863A;--shiki-dark:#D9F5DD">"</span><span style="color:#22863A;--shiki-dark:#ECC48D">同步任务1：</span><span style="color:#22863A;--shiki-dark:#D9F5DD">"</span><span style="color:#212121;--shiki-dark:#D6DEEB">,</span><span style="color:#24292EFF;--shiki-dark:#D7DBE0"> a</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">); </span><span style="color:#C2C3C5;--shiki-light-font-style:inherit;--shiki-dark:#637777;--shiki-dark-font-style:italic">// 立即执行，输出 1</span></span>
+<span class="line"><span style="color:#D32F2F;--shiki-dark:#C792EA">let</span><span style="color:#24292EFF;--shiki-dark:#D7DBE0"> b</span><span style="color:#D32F2F;--shiki-dark:#C792EA"> =</span><span style="color:#24292EFF;--shiki-dark:#D7DBE0"> a</span><span style="color:#D32F2F;--shiki-dark:#C792EA"> +</span><span style="color:#1976D2;--shiki-dark:#F78C6C"> 2</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">;</span></span>
+<span class="line"><span style="color:#1976D2;--shiki-light-font-style:inherit;--shiki-dark:#7FDBCA;--shiki-dark-font-style:italic">console</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">.</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">log</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#22863A;--shiki-dark:#D9F5DD">"</span><span style="color:#22863A;--shiki-dark:#ECC48D">同步任务2：</span><span style="color:#22863A;--shiki-dark:#D9F5DD">"</span><span style="color:#212121;--shiki-dark:#D6DEEB">,</span><span style="color:#24292EFF;--shiki-dark:#D7DBE0"> b</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">); </span><span style="color:#C2C3C5;--shiki-light-font-style:inherit;--shiki-dark:#637777;--shiki-dark-font-style:italic">// 立即执行，输出 3</span></span></code></pre>
+<p>同步任务就像在银行排队办业务：只有前面的人完全办完（任务结束），后面的人才能开始办，中间不能跳过。</p>
+<h4 id="312-异步先放一放等会再说">3.1.2 异步（“先放一放，等会再说”）</h4>
+<p><img src="https://pic1.zhimg.com/v2-6a5981c490be3d5e874ce537f3a23d06_r.jpg" alt=""></p>
+<pre class="astro-code astro-code-themes min-light night-owl" style="background-color:#ffffff;--shiki-dark-bg:#011627;color:#24292eff;--shiki-dark:#d6deeb; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#1976D2;--shiki-light-font-style:inherit;--shiki-dark:#7FDBCA;--shiki-dark-font-style:italic">console</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">.</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">log</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#22863A;--shiki-dark:#D9F5DD">"</span><span style="color:#22863A;--shiki-dark:#ECC48D">同步任务：ccc</span><span style="color:#22863A;--shiki-dark:#D9F5DD">"</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">); </span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">setTimeout</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#D32F2F;--shiki-dark:#C792EA">function</span><span style="color:#24292EFF;--shiki-dark:#D9F5DD">()</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> {</span></span>
+<span class="line"><span style="color:#1976D2;--shiki-light-font-style:inherit;--shiki-dark:#7FDBCA;--shiki-dark-font-style:italic">  console</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">.</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">log</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#22863A;--shiki-dark:#D9F5DD">"</span><span style="color:#22863A;--shiki-dark:#ECC48D">异步任务1：bbb（1秒后执行）</span><span style="color:#22863A;--shiki-dark:#D9F5DD">"</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">);</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">}</span><span style="color:#212121;--shiki-dark:#D6DEEB">,</span><span style="color:#1976D2;--shiki-dark:#F78C6C"> 1000</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#1976D2;--shiki-light-font-style:inherit;--shiki-dark:#7FDBCA;--shiki-dark-font-style:italic">document</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">.</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">addEventListener</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#22863A;--shiki-dark:#ECC48D">click</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#212121;--shiki-dark:#D6DEEB">,</span><span style="color:#D32F2F;--shiki-dark:#C792EA"> function</span><span style="color:#24292EFF;--shiki-dark:#D9F5DD">()</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> {</span></span>
+<span class="line"><span style="color:#1976D2;--shiki-light-font-style:inherit;--shiki-dark:#7FDBCA;--shiki-dark-font-style:italic">  console</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">.</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">log</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#22863A;--shiki-dark:#D9F5DD">"</span><span style="color:#22863A;--shiki-dark:#ECC48D">异步任务2：ddd（用户点击时才执行）</span><span style="color:#22863A;--shiki-dark:#D9F5DD">"</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">);</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C2C3C5;--shiki-light-font-style:inherit;--shiki-dark:#637777;--shiki-dark-font-style:italic">// 验证同步阻塞</span></span>
+<span class="line"><span style="color:#1976D2;--shiki-light-font-style:inherit;--shiki-dark:#7FDBCA;--shiki-dark-font-style:italic">console</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">.</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">log</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#24292EFF;--shiki-dark:#D7DBE0">aaa</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">);</span></span></code></pre>
+<h4 id="313-同步和异步对比">3.1.3 同步和异步对比</h4>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th align="left">对比维度</th><th align="left">同步（Synchronous）</th><th align="left">异步（Asynchronous）</th></tr></thead><tbody><tr><td align="left"><strong>执行顺序</strong></td><td align="left">严格按照代码书写顺序，<strong>前一个任务完成后，才执行后一个任务</strong></td><td align="left">不阻塞后续任务，<strong>前一个任务未完成时，直接执行后面的任务</strong></td></tr><tr><td align="left"><strong>阻塞性</strong></td><td align="left">会阻塞（卡住）后续代码执行</td><td align="left">不会阻塞后续代码执行</td></tr><tr><td align="left"><strong>适用场景</strong></td><td align="left">简单、耗时短的操作（如变量赋值、简单计算）</td><td align="left">耗时较长的操作（如网络请求、定时器、事件监听）</td></tr><tr><td align="left"><strong>执行结果</strong></td><td align="left">立即获取结果</td><td align="left">结果需要 “等待” 或 “触发” 后才能获取</td></tr></tbody></table>
+<h3 id="32-栈与队列">3.2 栈与队列</h3>
+<p>借助栈和队列这两种常见的数据结构概念帮助我们去了解事件循环的机制：</p>
+<ul>
+<li><strong>栈</strong>：“后进先出”，类似于盘子堆放时的拿起操作</li>
+<li><strong>队列</strong>：“先进先出”，类似我们吃饭排队买饭操作</li>
+</ul>
+<h3 id="33-promise">3.3 Promise</h3>
+<ol>
+<li>
+<p><strong>Promise 依赖事件循环实现异步</strong></p>
+<ul>
+<li>Promise 的异步操作（如 <code>fetch</code>、<code>setTimeout</code> 回调）不会阻塞主线程，而是被放入事件循环的任务队列中</li>
+<li>当 Promise 状态从 pending 变为 resolved/rejected 时，其 <code>.then()</code>/<code>.catch()</code> 回调会被添加到微任务队列</li>
+<li>执行优先级：微任务队列会在当前宏任务执行完成后立即清空，再执行下一个宏任务</li>
+</ul>
+</li>
+<li>
+<p><strong>链式调用与事件循环</strong></p>
+<ul>
+<li>Promise 链式调用中的每个 <code>.then()</code> 都会创建新的微任务</li>
+<li>即使前一个回调同步完成，下一个回调仍会放入微任务队列</li>
+<li>这保证了异步操作的有序执行，避免回调嵌套地狱</li>
+</ul>
+</li>
+</ol>
+<h2 id="四事件循环">四、事件循环</h2>
+<h3 id="41-什么是事件循环">4.1 什么是事件循环</h3>
+<p>事件循环是 JavaScript 实现异步编程的核心机制，它让 JavaScript 这种单线程语言能够处理异步任务，避免阻塞，保证程序的流畅运行。</p>
+<h3 id="42-javascript-的单线程特性">4.2 JavaScript 的单线程特性</h3>
+<p>单线程是 JS 语言的一大特点，也就是说程序在执行过程中，同一时间只能做一件事。在浏览器环境中，这一个线程既要负责执行 JavaScript 代码，又要处理 DOM 渲染、事件响应、网络请求等操作。</p>
+<p>如果没有事件循环机制，一旦遇到耗时较长的任务（如网络请求、定时器计时），整个程序就会被阻塞，导致页面卡顿无响应。</p>
+<blockquote>
+<p><strong>思考</strong>：既然 JS 是单线程的，那么为什么浏览器可以同时执行异步任务呢？</p>
+<p><strong>回答</strong>：浏览器是多线程的，当单线程的 JS 需要执行异步任务的时候，浏览器会启动另外一个线程去执行这个任务。</p>
+</blockquote>
+<h3 id="43-执行栈与任务队列">4.3 执行栈与任务队列</h3>
+<h4 id="431-事件循环执行步骤">4.3.1 事件循环执行步骤</h4>
+<p>在解析一段代码时，会将同步代码按顺序排在某个地方，即<strong>执行栈</strong>，然后依次执行里面的函数。当遇到异步任务时就交给其他线程处理，待当前执行栈所有同步代码执行完成后，会从一个队列中去取出已完成的异步任务的回调加入执行栈继续执行，遇到异步任务时又交给其他线程，如此循环往复。而其他异步任务完成后，将回调放入任务队列中待执行栈来取出执行。</p>
+<h4 id="432-宏任务和微任务先微后宏">4.3.2 宏任务和微任务（先微后宏）</h4>
+<blockquote>
+<p><strong>通俗易懂版</strong>：宏任务我们比作普通的学生，微任务我们比作领导家的小孩，当他们一起排队打饭时，这时候领导家的孩子就可以插队，先去打饭。</p>
+</blockquote>
+<p>任务队列不只一个，根据任务的种类不同，可以分为<strong>微任务（micro task）队列</strong>和<strong>宏任务（macro task）队列</strong>。</p>
+<p>事件循环的过程中，执行栈在同步代码执行完成后，<strong>优先检查微任务队列</strong>是否有任务需要执行，如果没有，再去宏任务队列检查是否有任务执行，如此往复。微任务一般在当前循环就会优先执行，而宏任务会等到下一次循环。因此，微任务一般比宏任务先执行，并且微任务队列只有一个，宏任务队列可能有多个。另外我们常见的点击和键盘等事件也属于宏任务。</p>
+<p><strong>常见的微任务：</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th align="left">微任务类型</th><th align="left">说明</th></tr></thead><tbody><tr><td align="left"><code>Promise.then/catch/finally</code></td><td align="left">Promise 状态改变后触发的回调（<code>new Promise(...)</code> 内部代码是同步的，仅回调是微任务）</td></tr></tbody></table>
+<p><strong>常见的宏任务：</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th align="left">宏任务类型</th><th align="left">说明</th></tr></thead><tbody><tr><td align="left"><code>script</code> 标签（整体代码）</td><td align="left">整个 <code>&#x3C;script></code> 内的代码是「第一个宏任务」，事件循环从执行它开始</td></tr><tr><td align="left"><code>setTimeout</code></td><td align="left">延迟指定时间后执行回调（最小延迟约 4ms，受事件循环阻塞影响）</td></tr><tr><td align="left"><code>setInterval</code></td><td align="left">每隔指定时间重复执行回调（同样受事件循环阻塞影响，可能不精准）</td></tr></tbody></table>
+<p><strong>代码演示：</strong></p>
+<pre class="astro-code astro-code-themes min-light night-owl" style="background-color:#ffffff;--shiki-dark-bg:#011627;color:#24292eff;--shiki-dark:#d6deeb; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#1976D2;--shiki-light-font-style:inherit;--shiki-dark:#7FDBCA;--shiki-dark-font-style:italic">console</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">.</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">log</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#22863A;--shiki-dark:#ECC48D">同步代码1</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">setTimeout</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#24292EFF;--shiki-dark:#D9F5DD">()</span><span style="color:#D32F2F;--shiki-dark:#C792EA"> =></span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> {</span></span>
+<span class="line"><span style="color:#1976D2;--shiki-light-font-style:inherit;--shiki-dark:#7FDBCA;--shiki-dark-font-style:italic">  console</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">.</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">log</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#22863A;--shiki-dark:#ECC48D">setTimeout</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">)</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">}</span><span style="color:#212121;--shiki-dark:#D6DEEB">,</span><span style="color:#1976D2;--shiki-dark:#F78C6C"> 0</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D32F2F;--shiki-dark:#7FDBCA">new</span><span style="color:#1976D2;--shiki-dark:#C5E478"> Promise</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#24292EFF;--shiki-dark:#D9F5DD">(</span><span style="color:#24292EFF;--shiki-dark:#D7DBE0">resolve</span><span style="color:#24292EFF;--shiki-dark:#D9F5DD">)</span><span style="color:#D32F2F;--shiki-dark:#C792EA"> =></span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> {</span></span>
+<span class="line"><span style="color:#1976D2;--shiki-light-font-style:inherit;--shiki-dark:#7FDBCA;--shiki-dark-font-style:italic">  console</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">.</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">log</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#22863A;--shiki-dark:#ECC48D">同步代码2</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">)</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">  resolve</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">()</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">})</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">.</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">then</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#24292EFF;--shiki-dark:#D9F5DD">()</span><span style="color:#D32F2F;--shiki-dark:#C792EA"> =></span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> {</span></span>
+<span class="line"><span style="color:#1976D2;--shiki-light-font-style:inherit;--shiki-dark:#7FDBCA;--shiki-dark-font-style:italic">  console</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">.</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">log</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#22863A;--shiki-dark:#ECC48D">promise.then</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">)</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">})</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#1976D2;--shiki-light-font-style:inherit;--shiki-dark:#7FDBCA;--shiki-dark-font-style:italic">console</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">.</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">log</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#22863A;--shiki-dark:#ECC48D">同步代码3</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C2C3C5;--shiki-light-font-style:inherit;--shiki-dark:#637777;--shiki-dark-font-style:italic">// 最终输出："同步代码1"、"同步代码2"、"同步代码3"、"promise.then"、"setTimeout"</span></span></code></pre>
+<p><strong>动图演示：</strong></p>
+<p><img src="/vento/images/eventloop/1.gif" alt="Event Loop动图"></p>
+<h4 id="为什么-promisethen-总是比-settimeout-先执行">为什么 <code>Promise.then</code> 总是比 <code>setTimeout</code> 先执行？</h4>
+<p>因为微任务优先级更高，他可是”关系户”，必须 “插队” 先做完～</p>
+<h2 id="五实践">五、实践</h2>
+<p>知识点都和大家介绍完了，下面我们来通过两个小例子来实战一下吧：</p>
+<p><strong>示例 1：</strong></p>
+<pre class="astro-code astro-code-themes min-light night-owl" style="background-color:#ffffff;--shiki-dark-bg:#011627;color:#24292eff;--shiki-dark:#d6deeb; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#1976D2;--shiki-light-font-style:inherit;--shiki-dark:#7FDBCA;--shiki-dark-font-style:italic">console</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">.</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">log</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#22863A;--shiki-dark:#ECC48D">1</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">setTimeout</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#24292EFF;--shiki-dark:#D9F5DD">()</span><span style="color:#D32F2F;--shiki-dark:#C792EA"> =></span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> {</span></span>
+<span class="line"><span style="color:#1976D2;--shiki-light-font-style:inherit;--shiki-dark:#7FDBCA;--shiki-dark-font-style:italic">  console</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">.</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">log</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#22863A;--shiki-dark:#ECC48D">2</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">);</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">}</span><span style="color:#212121;--shiki-dark:#D6DEEB">,</span><span style="color:#1976D2;--shiki-dark:#F78C6C"> 0</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D32F2F;--shiki-dark:#7FDBCA">new</span><span style="color:#1976D2;--shiki-dark:#C5E478"> Promise</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#24292EFF;--shiki-dark:#D9F5DD">(</span><span style="color:#24292EFF;--shiki-dark:#D7DBE0">resolve</span><span style="color:#24292EFF;--shiki-dark:#D9F5DD">)</span><span style="color:#D32F2F;--shiki-dark:#C792EA"> =></span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> {</span></span>
+<span class="line"><span style="color:#1976D2;--shiki-light-font-style:inherit;--shiki-dark:#7FDBCA;--shiki-dark-font-style:italic">  console</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">.</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">log</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#22863A;--shiki-dark:#ECC48D">3</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">);</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">  resolve</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">();</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">})</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">.</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">then</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#24292EFF;--shiki-dark:#D9F5DD">()</span><span style="color:#D32F2F;--shiki-dark:#C792EA"> =></span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> {</span></span>
+<span class="line"><span style="color:#1976D2;--shiki-light-font-style:inherit;--shiki-dark:#7FDBCA;--shiki-dark-font-style:italic">  console</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">.</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">log</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#22863A;--shiki-dark:#ECC48D">4</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">);</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#1976D2;--shiki-light-font-style:inherit;--shiki-dark:#7FDBCA;--shiki-dark-font-style:italic">console</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">.</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">log</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#22863A;--shiki-dark:#ECC48D">5</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">);</span></span></code></pre>
+<blockquote>
+<p><strong>提问</strong>：输出顺序是什么？</p>
+</blockquote>
+<p><strong>示例 2：</strong></p>
+<pre class="astro-code astro-code-themes min-light night-owl" style="background-color:#ffffff;--shiki-dark-bg:#011627;color:#24292eff;--shiki-dark:#d6deeb; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">setTimeout</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#24292EFF;--shiki-dark:#D9F5DD">()</span><span style="color:#D32F2F;--shiki-dark:#C792EA"> =></span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> {</span></span>
+<span class="line"><span style="color:#1976D2;--shiki-light-font-style:inherit;--shiki-dark:#7FDBCA;--shiki-dark-font-style:italic">  console</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">.</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">log</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#22863A;--shiki-dark:#ECC48D">1</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">);</span></span>
+<span class="line"><span style="color:#D32F2F;--shiki-dark:#7FDBCA">  new</span><span style="color:#1976D2;--shiki-dark:#C5E478"> Promise</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#24292EFF;--shiki-dark:#D9F5DD">(</span><span style="color:#24292EFF;--shiki-dark:#D7DBE0">resolve</span><span style="color:#24292EFF;--shiki-dark:#D9F5DD">)</span><span style="color:#D32F2F;--shiki-dark:#C792EA"> =></span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> {</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">    resolve</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">();</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">  })</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">.</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">then</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#24292EFF;--shiki-dark:#D9F5DD">()</span><span style="color:#D32F2F;--shiki-dark:#C792EA"> =></span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> {</span></span>
+<span class="line"><span style="color:#1976D2;--shiki-light-font-style:inherit;--shiki-dark:#7FDBCA;--shiki-dark-font-style:italic">    console</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">.</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">log</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#22863A;--shiki-dark:#ECC48D">2</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">);</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">  });</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">}</span><span style="color:#212121;--shiki-dark:#D6DEEB">,</span><span style="color:#1976D2;--shiki-dark:#F78C6C"> 0</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D32F2F;--shiki-dark:#7FDBCA">new</span><span style="color:#1976D2;--shiki-dark:#C5E478"> Promise</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#24292EFF;--shiki-dark:#D9F5DD">(</span><span style="color:#24292EFF;--shiki-dark:#D7DBE0">resolve</span><span style="color:#24292EFF;--shiki-dark:#D9F5DD">)</span><span style="color:#D32F2F;--shiki-dark:#C792EA"> =></span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> {</span></span>
+<span class="line"><span style="color:#1976D2;--shiki-light-font-style:inherit;--shiki-dark:#7FDBCA;--shiki-dark-font-style:italic">  console</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">.</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">log</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#22863A;--shiki-dark:#ECC48D">3</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">);</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">  resolve</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">();</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">})</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">.</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">then</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#24292EFF;--shiki-dark:#D9F5DD">()</span><span style="color:#D32F2F;--shiki-dark:#C792EA"> =></span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> {</span></span>
+<span class="line"><span style="color:#1976D2;--shiki-light-font-style:inherit;--shiki-dark:#7FDBCA;--shiki-dark-font-style:italic">  console</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">.</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">log</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#22863A;--shiki-dark:#ECC48D">4</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">);</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">  setTimeout</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#24292EFF;--shiki-dark:#D9F5DD">()</span><span style="color:#D32F2F;--shiki-dark:#C792EA"> =></span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> {</span></span>
+<span class="line"><span style="color:#1976D2;--shiki-light-font-style:inherit;--shiki-dark:#7FDBCA;--shiki-dark-font-style:italic">    console</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">.</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">log</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#22863A;--shiki-dark:#ECC48D">5</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">);</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">  }</span><span style="color:#212121;--shiki-dark:#D6DEEB">,</span><span style="color:#1976D2;--shiki-dark:#F78C6C"> 0</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">);</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#1976D2;--shiki-light-font-style:inherit;--shiki-dark:#7FDBCA;--shiki-dark-font-style:italic">console</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">.</span><span style="color:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">log</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#22863A;--shiki-dark:#ECC48D">6</span><span style="color:#22863A;--shiki-dark:#D9F5DD">'</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">);</span></span></code></pre>
+<blockquote>
+<p><strong>提问</strong>：输出顺序是什么？</p>
+</blockquote>
+<details>
+<summary>点击查看答案</summary>
+<p><strong>示例 1 答案</strong>：1 → 3 → 5 → 4 → 2</p>
+<p><strong>示例 2 答案</strong>：3 → 6 → 4 → 1 → 2 → 5</p>
+</details>
+<h2 id="六结语">六、结语</h2>
+<p>事件循环是 JavaScript 异步世界的隐形调度者，它用 “同步优先、微任务次之、宏任务殿后” 的简单规则，支撑起单线程语言的高效并发。</p>
+<p>理解它，不仅能看透代码执行的先后顺序，更能掌握异步编程的底层逻辑。当你能清晰预判每一行异步代码的执行时机时，便真正打通了 JavaScript 的任督二脉。</p>
+<p>愿我们在写异步逻辑时，都能想起这位默默工作的调度者，让代码更可控，让我们的思路更清晰。</p> </article> <hr class="my-8 border-dashed" data-astro-cid-vj4tpspi> <div class="opacity-80 sm:hidden"><span aria-hidden="true" class="max-sm:hidden">
+|
+</span><a class="space-x-1.5 hover:opacity-75" href="https://github.com/yousef8/astro-paper-i18n/edit/main/src/data/blog/en/事件循环.md" rel="noopener noreferrer" target="_blank"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" /><path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" /><path d="M16 5l3 3" /></svg><span class="italic max-sm:text-sm sm:inline">Suggest Changes</span></a></div> <ul class="mt-4 mb-8 sm:my-8" data-astro-cid-vj4tpspi> <li class="group inline-block group-hover:cursor-pointer my-1 underline-offset-4"> <a href="/vento/tags/随笔/" class="relative pe-2 text-lg underline decoration-dashed group-hover:-top-0.5 group-hover:text-accent focus-visible:p-1 text-sm" data-astro-transition-scope="astro-36ssibgs-2"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block opacity-80 -me-3.5 size-4"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 9l14 0" /><path d="M5 15l14 0" /><path d="M11 4l-4 16" /><path d="M17 4l-4 16" /></svg>
+&nbsp;<span>随笔</span> </a> </li><li class="group inline-block group-hover:cursor-pointer my-1 underline-offset-4"> <a href="/vento/tags/java-script/" class="relative pe-2 text-lg underline decoration-dashed group-hover:-top-0.5 group-hover:text-accent focus-visible:p-1 text-sm" data-astro-transition-scope="astro-36ssibgs-3"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block opacity-80 -me-3.5 size-4"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 9l14 0" /><path d="M5 15l14 0" /><path d="M11 4l-4 16" /><path d="M17 4l-4 16" /></svg>
+&nbsp;<span>JavaScript</span> </a> </li><li class="group inline-block group-hover:cursor-pointer my-1 underline-offset-4"> <a href="/vento/tags/前端/" class="relative pe-2 text-lg underline decoration-dashed group-hover:-top-0.5 group-hover:text-accent focus-visible:p-1 text-sm" data-astro-transition-scope="astro-36ssibgs-4"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block opacity-80 -me-3.5 size-4"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 9l14 0" /><path d="M5 15l14 0" /><path d="M11 4l-4 16" /><path d="M17 4l-4 16" /></svg>
+&nbsp;<span>前端</span> </a> </li><li class="group inline-block group-hover:cursor-pointer my-1 underline-offset-4"> <a href="/vento/tags/异步编程/" class="relative pe-2 text-lg underline decoration-dashed group-hover:-top-0.5 group-hover:text-accent focus-visible:p-1 text-sm" data-astro-transition-scope="astro-36ssibgs-5"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block opacity-80 -me-3.5 size-4"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 9l14 0" /><path d="M5 15l14 0" /><path d="M11 4l-4 16" /><path d="M17 4l-4 16" /></svg>
+&nbsp;<span>异步编程</span> </a> </li> </ul> <div id="btt-btn-container" class="fixed end-4 bottom-8 z-50 md:sticky md:end-auto md:float-end md:me-1 translate-y-14 opacity-0 transition duration-500"> <button data-button="back-to-top" class="group relative bg-background px-2 py-1 size-14 rounded-full shadow-xl md:h-8 md:w-fit md:rounded-md md:shadow-none md:bg-background/35 md:bg-clip-padding md:backdrop-blur-lg"> <span id="progress-indicator" class="absolute inset-0 -z-10 block size-14 scale-110 rounded-full bg-transparent md:hidden md:h-8 md:rounded-md"></span> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block rotate-90 md:hidden"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M15 6l-6 6l6 6" /></svg> <span class="sr-only text-sm group-hover:text-accent md:not-sr-only"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-4"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></svg> Back to Top </span> </button> </div> <script data-astro-rerun>
+  /** Scrolls the document to the top when
+   * the "Back to Top" button is clicked. */
+  function backToTop() {
+    const rootElement = document.documentElement;
+    const btnContainer = document.querySelector("#btt-btn-container");
+    const backToTopBtn = document.querySelector("[data-button='back-to-top']");
+    const progressIndicator = document.querySelector("#progress-indicator");
+
+    if (!rootElement || !btnContainer || !backToTopBtn || !progressIndicator)
+      return;
+
+    // Attach click event handler for back-to-top button
+    backToTopBtn.addEventListener("click", () => {
+      document.body.scrollTop = 0; // For Safari
+      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    });
+
+    // Handle button visibility according to scroll position
+    let lastVisible = null;
+    function handleScroll() {
+      const scrollTotal = rootElement.scrollHeight - rootElement.clientHeight;
+      const scrollTop = rootElement.scrollTop;
+      const scrollPercent = Math.floor((scrollTop / scrollTotal) * 100);
+
+      progressIndicator.style.setProperty(
+        "background-image",
+        `conic-gradient(var(--accent), var(--accent) ${scrollPercent}%, transparent ${scrollPercent}%)`
+      );
+
+      const isVisible = scrollTop / scrollTotal > 0.3;
+
+      if (isVisible !== lastVisible) {
+        btnContainer.classList.toggle("opacity-100", isVisible);
+        btnContainer.classList.toggle("translate-y-0", isVisible);
+        btnContainer.classList.toggle("opacity-0", !isVisible);
+        btnContainer.classList.toggle("translate-y-14", !isVisible);
+        lastVisible = isVisible;
+      }
+    }
+
+    let ticking = false;
+    document.addEventListener("scroll", () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  }
+  backToTop();
+</script> <div class="flex flex-none flex-col items-center justify-center gap-1 md:items-start"><span class="italic">Share this post on:</span><div class="text-center"><a href="javascript:(function(){navigator.clipboard.writeText(window.location.href);alert('链接已复制，粘贴到微信发送给朋友吧！');})();https://zhangxiaohh.github.io/vento/posts/js-event-loop/" class="group inline-block hover:text-accent scale-90 p-2 hover:rotate-6 sm:p-1" title="复制链接分享"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M16.5 10c3.038 0 5.5 2.015 5.5 4.5c0 1.397 -.778 2.645 -2 3.47l0 2.03l-1.964 -1.178a6.649 6.649 0 0 1 -1.536 .178c-3.038 0 -5.5 -2.015 -5.5 -4.5s2.462 -4.5 5.5 -4.5" /><path d="M11.197 15.698c-.69 .196 -1.43 .302 -2.197 .302a8.008 8.008 0 0 1 -2.612 -.432l-2.388 1.432v-2.801c-1.237 -1.082 -2 -2.564 -2 -4.199c0 -3.314 3.134 -6 7 -6c3.782 0 6.863 2.57 7 5.785l0 .233" /><path d="M10 8h.01" /><path d="M7 8h.01" /><path d="M15 14h.01" /><path d="M18 14h.01" /></svg><span class="sr-only">复制链接分享</span></a><a href="https://connect.qq.com/widget/shareqq/index.html?url=https://zhangxiaohh.github.io/vento/posts/js-event-loop/" class="group inline-block hover:text-accent scale-90 p-2 hover:rotate-6 sm:p-1" title="分享到QQ"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M6 9.748a14.716 14.716 0 0 0 11.995 -.052c.275 -9.236 -11.104 -11.256 -11.995 .052" /><path d="M18 10c.984 2.762 1.949 4.765 2 7.153c.014 .688 -.664 1.346 -1.184 .303c-.346 -.696 -.952 -1.181 -1.816 -1.456" /><path d="M17 16c.031 1.831 .147 3.102 -1 4" /><path d="M8 20c-1.099 -.87 -.914 -2.24 -1 -4" /><path d="M6 10c-.783 2.338 -1.742 4.12 -1.968 6.43c-.217 2.227 .716 1.644 1.16 .917c.296 -.487 .898 -.934 1.808 -1.347" /><path d="M15.898 13l-.476 -2" /><path d="M8 20l-1.5 1c-.5 .5 -.5 1 .5 1h10c1 0 1 -.5 .5 -1l-1.5 -1" /><path d="M12.75 7a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M9.25 7a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg><span class="sr-only">分享到QQ</span></a><a href="mailto:?subject=来看看这篇有趣的文章&#38;body=我发现了一篇很棒的文章，分享给你：https://zhangxiaohh.github.io/vento/posts/js-event-loop/" class="group inline-block hover:text-accent scale-90 p-2 hover:rotate-6 sm:p-1" title="通过邮件分享"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg><span class="sr-only">通过邮件分享</span></a></div></div> <hr class="my-6 border-dashed" data-astro-cid-vj4tpspi> <!-- Previous/Next Post Buttons --> <div data-pagefind-ignore class="grid grid-cols-1 gap-6 sm:grid-cols-2" data-astro-cid-vj4tpspi> <a href="/vento/posts/typescript-generics" class="flex w-full gap-1 hover:opacity-75" data-astro-cid-vj4tpspi> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block flex-none rtl:rotate-180" data-astro-cid-vj4tpspi="true"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M15 6l-6 6l6 6" /></svg> <div data-astro-cid-vj4tpspi> <span data-astro-cid-vj4tpspi>Previous Post</span> <div class="text-sm text-accent/85" data-astro-cid-vj4tpspi>Typescript——泛型</div> </div> </a>  </div> </main> <footer class="w-full mt-auto"> <div class="mx-auto max-w-app px-0"> <hr class="border-border" aria-hidden="true"> </div> <div class="flex flex-col items-center justify-between py-6 sm:flex-row-reverse sm:py-4"> <div class="flex-wrap justify-center gap-1 flex" data-astro-cid-upu6fzxr> <a href="https://github.com/zhangxiaohh" class="group inline-block hover:text-accent p-2 hover:rotate-6 sm:p-1" title="vento on Github"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110" data-astro-cid-upu6fzxr="true"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" /></svg> <span class="sr-only" data-astro-cid-upu6fzxr> vento on Github </span> </a><button type="button" class="copy-btn focus-outline relative p-2 hover:rotate-6 sm:p-1 cursor-pointer bg-transparent border-none" title="WeChat: vento040624 (点击复制)" data-copy-value="vento040624" data-name="WeChat" data-astro-cid-upu6fzxr> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110" data-astro-cid-upu6fzxr="true"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M16.5 10c3.038 0 5.5 2.015 5.5 4.5c0 1.397 -.778 2.645 -2 3.47l0 2.03l-1.964 -1.178a6.649 6.649 0 0 1 -1.536 .178c-3.038 0 -5.5 -2.015 -5.5 -4.5s2.462 -4.5 5.5 -4.5" /><path d="M11.197 15.698c-.69 .196 -1.43 .302 -2.197 .302a8.008 8.008 0 0 1 -2.612 -.432l-2.388 1.432v-2.801c-1.237 -1.082 -2 -2.564 -2 -4.199c0 -3.314 3.134 -6 7 -6c3.782 0 6.863 2.57 7 5.785l0 .233" /><path d="M10 8h.01" /><path d="M7 8h.01" /><path d="M15 14h.01" /><path d="M18 14h.01" /></svg> <span class="sr-only" data-astro-cid-upu6fzxr> WeChat </span> <span class="copy-tooltip absolute -top-8 left-1/2 -translate-x-1/2 bg-accent text-white text-xs px-2 py-1 rounded opacity-0 transition-opacity pointer-events-none whitespace-nowrap" data-astro-cid-upu6fzxr>
+已复制!
+</span> </button><button type="button" class="copy-btn focus-outline relative p-2 hover:rotate-6 sm:p-1 cursor-pointer bg-transparent border-none" title="QQ: 210567852 (点击复制)" data-copy-value="210567852" data-name="QQ" data-astro-cid-upu6fzxr> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110" data-astro-cid-upu6fzxr="true"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M6 9.748a14.716 14.716 0 0 0 11.995 -.052c.275 -9.236 -11.104 -11.256 -11.995 .052" /><path d="M18 10c.984 2.762 1.949 4.765 2 7.153c.014 .688 -.664 1.346 -1.184 .303c-.346 -.696 -.952 -1.181 -1.816 -1.456" /><path d="M17 16c.031 1.831 .147 3.102 -1 4" /><path d="M8 20c-1.099 -.87 -.914 -2.24 -1 -4" /><path d="M6 10c-.783 2.338 -1.742 4.12 -1.968 6.43c-.217 2.227 .716 1.644 1.16 .917c.296 -.487 .898 -.934 1.808 -1.347" /><path d="M15.898 13l-.476 -2" /><path d="M8 20l-1.5 1c-.5 .5 -.5 1 .5 1h10c1 0 1 -.5 .5 -1l-1.5 -1" /><path d="M12.75 7a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M9.25 7a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg> <span class="sr-only" data-astro-cid-upu6fzxr> QQ </span> <span class="copy-tooltip absolute -top-8 left-1/2 -translate-x-1/2 bg-accent text-white text-xs px-2 py-1 rounded opacity-0 transition-opacity pointer-events-none whitespace-nowrap" data-astro-cid-upu6fzxr>
+已复制!
+</span> </button><button type="button" class="copy-btn focus-outline relative p-2 hover:rotate-6 sm:p-1 cursor-pointer bg-transparent border-none" title="Mail: 210567852@qq.com (点击复制)" data-copy-value="210567852@qq.com" data-name="Mail" data-astro-cid-upu6fzxr> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110" data-astro-cid-upu6fzxr="true"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg> <span class="sr-only" data-astro-cid-upu6fzxr> Mail </span> <span class="copy-tooltip absolute -top-8 left-1/2 -translate-x-1/2 bg-accent text-white text-xs px-2 py-1 rounded opacity-0 transition-opacity pointer-events-none whitespace-nowrap" data-astro-cid-upu6fzxr>
+已复制!
+</span> </button> </div>  <script type="module">function n(){document.querySelectorAll(".copy-btn").forEach(c=>{const e=c.cloneNode(!0);c.parentNode?.replaceChild(e,c),e.addEventListener("click",async d=>{d.preventDefault(),d.stopPropagation();const o=e.getAttribute("data-copy-value"),r=e.getAttribute("data-name")||"";if(o)try{if(navigator.clipboard&&navigator.clipboard.writeText)await navigator.clipboard.writeText(o);else{const t=document.createElement("textarea");t.value=o,t.style.position="fixed",t.style.left="-9999px",document.body.appendChild(t),t.select(),document.execCommand("copy"),document.body.removeChild(t)}const a=e.querySelector(".copy-tooltip");a&&(a.textContent=`${r} 已复制!`,e.classList.add("copied"),setTimeout(()=>{e.classList.remove("copied")},2e3)),console.log(`已复制 ${r}: ${o}`)}catch(a){console.error("复制失败:",a),alert(`复制失败，请手动复制: ${o}`)}})})}document.readyState==="loading"?document.addEventListener("DOMContentLoaded",n):n();document.addEventListener("astro:page-load",n);document.addEventListener("astro:after-swap",n);</script> <div class="my-2 flex flex-col items-center whitespace-nowrap sm:flex-row"> <span>Copyright © 2026 Vento | All rights reserved</span> </div> </div> </footer>  <!-- oneko.js 猫猫跟随鼠标特效 --> <script data-neko-cat="/vento/oneko.gif">
+      const onekoScript = document.createElement('script');
+      onekoScript.src = 'https://cdn.jsdelivr.net/gh/adryd325/oneko.js@main/oneko.js';
+      const currentScript = document.currentScript;
+      const catUrl = currentScript.getAttribute('data-neko-cat');
+      onekoScript.setAttribute('data-cat', catUrl);
+      document.body.appendChild(onekoScript);
+    </script> </body> </html>   <script data-astro-rerun>
+  /** Create a progress indicator
+   *  at the top */
+  function createProgressBar() {
+    // Create the main container div
+    const progressContainer = document.createElement("div");
+    progressContainer.className =
+      "progress-container fixed top-0 z-10 h-1 w-full bg-background";
+
+    // Create the progress bar div
+    const progressBar = document.createElement("div");
+    progressBar.className = "progress-bar h-1 w-0 bg-accent";
+    progressBar.id = "myBar";
+
+    // Append the progress bar to the progress container
+    progressContainer.appendChild(progressBar);
+
+    // Append the progress container to the document body or any other desired parent element
+    document.body.appendChild(progressContainer);
+  }
+  createProgressBar();
+
+  /** Update the progress bar
+   *  when user scrolls */
+  function updateScrollProgress() {
+    document.addEventListener("scroll", () => {
+      const winScroll =
+        document.body.scrollTop || document.documentElement.scrollTop;
+      const height =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      if (document) {
+        const myBar = document.getElementById("myBar");
+        if (myBar) {
+          myBar.style.width = scrolled + "%";
+        }
+      }
+    });
+  }
+  updateScrollProgress();
+
+  /** Attaches links to headings in the document,
+   *  allowing sharing of sections easily */
+  function addHeadingLinks() {
+    const headings = Array.from(
+      document.querySelectorAll("h2, h3, h4, h5, h6")
+    );
+    for (const heading of headings) {
+      heading.classList.add("group");
+      const link = document.createElement("a");
+      link.className =
+        "heading-link ml-2 opacity-0 group-hover:opacity-100 focus:opacity-100";
+      link.href = "#" + heading.id;
+
+      const span = document.createElement("span");
+      span.ariaHidden = "true";
+      span.innerText = "#";
+      link.appendChild(span);
+      heading.appendChild(link);
+    }
+  }
+  addHeadingLinks();
+
+  /** Attaches copy buttons to code blocks in the document,
+   * allowing users to copy code easily. */
+  function attachCopyButtons() {
+    const mainContent = document.querySelector("#main-content");
+    const copyButtonLabel = mainContent?.dataset?.copyString ?? "copy";
+
+    const codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    for (const codeBlock of codeBlocks) {
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      const copyButton = document.createElement("button");
+      copyButton.className =
+        "copy-code absolute right-3 -top-3 rounded bg-muted px-2 py-1 text-xs leading-4 text-foreground font-medium";
+      copyButton.innerHTML = copyButtonLabel;
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      // wrap codebock with relative parent element
+      codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+
+    async function copyCode(block, button) {
+      const code = block.querySelector("code");
+      const text = code?.innerText;
+
+      await navigator.clipboard.writeText(text ?? "");
+
+      // visual feedback that task is completed
+      button.innerText = mainContent?.dataset?.copiedString ?? "Copied";
+
+      setTimeout(() => {
+        button.innerText = copyButtonLabel;
+      }, 700);
+    }
+  }
+  attachCopyButtons();
+
+  /* Go to page start after page swap */
+  document.addEventListener("astro:after-swap", () =>
+    window.scrollTo({ left: 0, top: 0, behavior: "instant" })
+  );
+</script>

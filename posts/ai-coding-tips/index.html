@@ -1,0 +1,513 @@
+<!DOCTYPE html><html lang="en" class="scroll-smooth" dir="ltr" data-astro-cid-sckkx6r4> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><link rel="icon" type="image/svg+xml" href="/vento/favicon.svg"><link rel="canonical" href="https://zhangxiaohh.github.io/vento/posts/ai-coding-tips/"><meta name="generator" content="Astro v5.16.5"><!-- General Meta Tags --><title>AI编码技巧分享 | vento</title><meta name="title" content="AI编码技巧分享 | vento"><meta name="description" content="AI编码技巧分享，包括Prompt工程、模型选择、逐步构建方法等实用技巧。"><meta name="author" content="vento"><link rel="sitemap" href="/vento/sitemap-index.xml"><!-- Open Graph / Facebook --><meta property="og:title" content="AI编码技巧分享 | vento"><meta property="og:description" content="AI编码技巧分享，包括Prompt工程、模型选择、逐步构建方法等实用技巧。"><meta property="og:url" content="https://zhangxiaohh.github.io/vento/posts/ai-coding-tips/"><meta property="og:image" content="https://zhangxiaohh.github.io/vento/posts/ai-coding-tips/index.png"><!-- Article Published/Modified time --><meta property="article:published_time" content="2026-04-10T00:00:00.000Z"><meta property="article:modified_time" content="2026-04-10T00:00:00.000Z"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://zhangxiaohh.github.io/vento/posts/ai-coding-tips/"><meta property="twitter:title" content="AI编码技巧分享 | vento"><meta property="twitter:description" content="AI编码技巧分享，包括Prompt工程、模型选择、逐步构建方法等实用技巧。"><meta property="twitter:image" content="https://zhangxiaohh.github.io/vento/posts/ai-coding-tips/index.png"><!-- Google JSON-LD Structured data --><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"AI编码技巧分享 | vento","image":"https://zhangxiaohh.github.io/vento/posts/ai-coding-tips/index.png","datePublished":"2026-04-10T00:00:00.000Z","dateModified":"2026-04-10T00:00:00.000Z","author":[{"@type":"Person","name":"vento","url":"https://yousef8.github.io/astro-paper-i18n"}]}</script><!-- Enable RSS feed auto-discovery  --><!-- https://docs.astro.build/en/recipes/rss/#enabling-rss-feed-auto-discovery --><link rel="alternate" type="application/rss+xml" title="vento" href="https://zhangxiaohh.github.io/vento/rss.xml"><!-- Google Font --><meta name="theme-color" content=""><!-- <ClientRouter /> --><script src="/vento/toggle-theme.js"></script><!-- mouse-firework 粒子爆炸特效 --><script type="module">document.addEventListener("DOMContentLoaded",function(){const e=document.createElement("script");e.src="https://www.unpkg.com/mouse-firework@latest/dist/index.umd.js",e.onload=function(){typeof firework=="function"&&firework({excludeElements:["a","button","input","textarea","select"],particles:[{shape:"circle",move:"emit",easing:"easeOutExpo",colors:["rgba(255,182,185,.9)","rgba(250,227,217,.9)","rgba(187,222,214,.9)","rgba(138,198,209,.9)","rgba(255,218,185,.9)","rgba(221,160,221,.9)"],number:30,duration:[1200,1800],shapeOptions:{radius:[8,20]}}]})},document.head.appendChild(e)});</script><link rel="stylesheet" href="/vento/astro-assets/about-MyGwzdDO.css">
+<style>@keyframes astroFadeInOut{0%{opacity:1}to{opacity:0}}@keyframes astroFadeIn{0%{opacity:0;mix-blend-mode:plus-lighter}to{opacity:1;mix-blend-mode:plus-lighter}}@keyframes astroFadeOut{0%{opacity:1;mix-blend-mode:plus-lighter}to{opacity:0;mix-blend-mode:plus-lighter}}@keyframes astroSlideFromRight{0%{transform:translate(100%)}}@keyframes astroSlideFromLeft{0%{transform:translate(-100%)}}@keyframes astroSlideToRight{to{transform:translate(100%)}}@keyframes astroSlideToLeft{to{transform:translate(-100%)}}@media(prefers-reduced-motion){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}[data-astro-transition-scope]{animation:none!important}}
+article[data-astro-cid-vj4tpspi] pre{direction:ltr;text-align:left}
+:where([data-astro-image]){object-fit:var(--fit);object-position:var(--pos);height:auto}:where([data-astro-image=full-width]){width:100%}:where([data-astro-image=constrained]){max-width:100%}
+</style><style>[data-astro-transition-scope="astro-fam6wyqg-1"] { view-transition-name: ai\7F16\7801\6280\5DE7\5206\4EAB; }@layer astro { ::view-transition-old(ai\7F16\7801\6280\5DE7\5206\4EAB) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(ai\7F16\7801\6280\5DE7\5206\4EAB) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(ai\7F16\7801\6280\5DE7\5206\4EAB) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(ai\7F16\7801\6280\5DE7\5206\4EAB) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-fam6wyqg-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-fam6wyqg-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-fam6wyqg-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-fam6wyqg-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-fam6wyqg-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-fam6wyqg-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-fam6wyqg-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-fam6wyqg-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-36ssibgs-2"] { view-transition-name: \968F\7B14; }@layer astro { ::view-transition-old(\968F\7B14) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(\968F\7B14) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(\968F\7B14) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(\968F\7B14) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-2"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-2"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-36ssibgs-3"] { view-transition-name: ai; }@layer astro { ::view-transition-old(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-3"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-3"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-36ssibgs-4"] { view-transition-name: \524D\7AEF; }@layer astro { ::view-transition-old(\524D\7AEF) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(\524D\7AEF) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(\524D\7AEF) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(\524D\7AEF) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-4"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-4"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-36ssibgs-5"] { view-transition-name: \6548\7387; }@layer astro { ::view-transition-old(\6548\7387) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(\6548\7387) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(\6548\7387) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(\6548\7387) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-5"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-5"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head> <body data-astro-cid-sckkx6r4>  <header> <a id="skip-to-content" href="#main-content" class="absolute start-16 -top-full z-50 bg-background px-3 py-2 text-accent backdrop-blur-lg transition-all focus:top-4"> Skip to content </a> <div id="nav-container" class="mx-auto flex max-w-app flex-col items-center justify-between sm:flex-row"> <div id="top-nav-wrap" class="relative flex w-full items-baseline justify-between bg-background p-4 sm:items-center sm:py-6"> <a href="/vento/" class="absolute flex items-center gap-2 py-1 text-xl leading-8 font-semibold whitespace-nowrap sm:static sm:my-auto sm:text-2xl sm:leading-none"> <img src="/vento/avatar.jpg" alt="avatar" class="h-8 w-8 rounded-full object-cover sm:h-10 sm:w-10" onerror="this.style.display='none'"> <span class="text-base sm:text-lg">vento</span> </a> <nav id="nav-menu" class="flex w-full flex-col items-center sm:ms-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0"> <button id="menu-btn" class="focus-outline self-end p-2 sm:hidden" aria-label="Open Menu" aria-expanded="false" aria-controls="menu-items" data-open-text="Open Menu" data-close-text="Close Menu"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden" id="close-icon"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-menu-deep" id="menu-icon"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 6h16" /><path d="M7 12h13" /><path d="M10 18h10" /></svg> </button> <ul id="menu-items" class="mt-4 grid w-44 grid-cols-3 place-content-center gap-2 [&#38;>li>a]:block [&#38;>li>a]:px-4 [&#38;>li>a]:py-3 [&#38;>li>a]:text-center [&#38;>li>a]:font-medium [&#38;>li>a]:hover:text-accent sm:[&#38;>li>a]:px-2 sm:[&#38;>li>a]:py-1 hidden sm:ms-0 sm:mt-0 sm:flex sm:w-auto sm:gap-x-5 sm:gap-y-0"> <li class="col-span-3"> <a href="/vento/posts/"> Posts </a> </li> <li class="col-span-3"> <a href="/vento/tags/"> Tags </a> </li> <li class="col-span-3"> <a href="/vento/about"> About </a> </li> <li class="col-span-3"> <a href="/vento/archives" class="group inline-block hover:text-accent focus-outline flex justify-center p-3 sm:p-1" aria-label="archives" title="   Archives"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden sm:inline-block"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M3 4m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" /><path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" /><path d="M10 12l4 0" /></svg> <span class="sm:sr-only">Archives</span> </a> </li> <li class="col-span-1 flex items-center justify-center"> <a href="/vento/search" class="group inline-block hover:text-accent focus-outline flex p-3 sm:p-1" aria-label="search" title=" Search"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-search"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg> <span class="sr-only">Search</span> </a> </li> <li class="col-span-1 flex items-center justify-center"> <button id="theme-btn" class="focus-outline relative size-12 p-4 sm:size-8 hover:[&>svg]:stroke-accent" title="Toggles light & dark" aria-label="auto" aria-live="polite"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute top-[50%] left-[50%] -translate-[50%] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" /></svg> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute top-[50%] left-[50%] -translate-[50%] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M14.828 14.828a4 4 0 1 0 -5.656 -5.656a4 4 0 0 0 5.656 5.656z" /><path d="M6.343 17.657l-1.414 1.414" /><path d="M6.343 6.343l-1.414 -1.414" /><path d="M17.657 6.343l1.414 -1.414" /><path d="M17.657 17.657l1.414 1.414" /><path d="M4 12h-2" /><path d="M12 4v-2" /><path d="M20 12h2" /><path d="M12 20v2" /></svg> </button> </li> </ul> </nav> </div> </div> <div class="mx-auto max-w-app px-4"> <hr class="border-border" aria-hidden="true"> </div> </header> <script type="module">function c(){const e=document.querySelector("#menu-btn"),t=document.querySelector("#menu-items"),n=document.querySelector("#menu-icon"),o=document.querySelector("#close-icon"),u=e?.dataset.openText||"Open Menu",a=e?.dataset.closeText||"Close Menu";!e||!t||!n||!o||e.addEventListener("click",()=>{const s=e.getAttribute("aria-expanded")==="true";e.setAttribute("aria-expanded",s?"false":"true"),e.setAttribute("aria-label",s?u:a),t.classList.toggle("hidden"),n.classList.toggle("hidden"),o.classList.toggle("hidden")})}c();document.addEventListener("astro:after-swap",c);</script> <div class="mx-auto flex w-full max-w-app items-center justify-start px-2"><a id="back-button" href="/vento/" class="group inline-block hover:text-accent focus-outline mt-8 mb-2 flex hover:text-foreground/75"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 rtl:rotate-180"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M15 6l-6 6l6 6" /></svg><span>Go back</span></a></div><script type="module">function o(){const t=document.querySelector("#back-button"),e=sessionStorage.getItem("backUrl");e&&t&&(t.href=e)}document.addEventListener("astro:page-load",o);o();</script> <main id="main-content" class="mx-auto w-full max-w-app px-4 pb-12" data-pagefind-body data-copy-string="copy" data-copied-string="copied" data-astro-cid-vj4tpspi> <h1 class="inline-block text-2xl font-bold text-accent sm:text-3xl" data-astro-cid-vj4tpspi data-astro-transition-scope="astro-fam6wyqg-1"> AI编码技巧分享 </h1> <div class="flex items-center gap-4" data-astro-cid-vj4tpspi> <div class="flex items-end space-x-2 opacity-80 my-2"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 min-w-[1.375rem]"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" /><path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M7 14h.013" /><path d="M10.01 14h.005" /><path d="M13.01 14h.005" /><path d="M16.015 14h.005" /><path d="M13.015 17h.005" /><path d="M7.01 17h.005" /><path d="M10.01 17h.005" /></svg> <span class="sr-only">Published:</span> <span class="text-sm italic sm:text-base"> <time datetime="2026-04-10T07:00:00.000+07:00">Apr 10, 2026</time> <span aria-hidden="true"> | </span> <span class="sr-only">&nbsp;at&nbsp;</span> <span class="text-nowrap">7:00 AM</span> </span> </div> <div class="opacity-80 max-sm:hidden"><span aria-hidden="true" class="max-sm:hidden">
+|
+</span><a class="space-x-1.5 hover:opacity-75" href="https://github.com/yousef8/astro-paper-i18n/edit/main/src/data/blog/en/分享会—AI编码技巧.md" rel="noopener noreferrer" target="_blank"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" /><path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" /><path d="M16 5l3 3" /></svg><span class="italic max-sm:text-sm sm:inline">Suggest Changes</span></a></div> </div> <article id="article" class="mx-auto prose mt-8 max-w-app" data-astro-cid-vj4tpspi> <h2 id="一前言ai发展">一、前言——AI发展</h2>
+<h3 id="1transformer架构">1、Transformer架构</h3>
+<p>例子：「小明 说 他 今天 不来 上课 了」</p>
+<h4 id="11-传统模型rnn怎么理解">1.1 传统模型（RNN）怎么理解？</h4>
+<p>像读课文一样，一个字一个字读</p>
+<p>读到 “他” 的时候，早就忘了前面的 “小明”，所以经常理解错。</p>
+<h4 id="12-transformer-到底是啥">1.2 Transformer 到底是啥？</h4>
+<p>一句话：一个让 AI 能 “看懂整句话、知道哪个词重要、哪个词不重要” 的结构。</p>
+<p>它会一次性看完所有字，然后互相 “看一眼”</p>
+<p>比如处理”他” 这个字时：</p>
+<ul>
+<li>看一眼「小明」→ 关系很强</li>
+<li>看一眼「说」→ 关系一般</li>
+<li>看一眼「今天」→ 关系很弱</li>
+<li>看一眼「上课」→ 关系一般</li>
+</ul>
+<p>AI 读完，原来 “他” = 小明，这就叫注意力机制。</p>
+<h3 id="2agi五层架构详解">2、AGI五层架构详解</h3>
+<p>通用人工智能（AGI）是一种人工智能形式，在每项任务中都能比人类表现得更好。他们对世界有广泛而普遍的理解，可以自己进行一定程度的思考和推理，允许在无人监督的情况下进行现实世界的行动。</p>
+<p><img alt="AGI五层架构" loading="lazy" decoding="async" fetchpriority="auto" sizes="(min-width: 791px) 791px, 100vw"  data-astro-image="constrained" width="791" height="372" src="/vento/astro-assets/1-BKlSNd31_ZCy5lE.webp" srcset="/vento/astro-assets/1-BKlSNd31_ZkhCDv.webp 640w, /vento/astro-assets/1-BKlSNd31_2m7w92.webp 750w, /vento/astro-assets/1-BKlSNd31_ZCy5lE.webp 791w"></p>
+<ul>
+<li>
+<p>第 1 层：聊天机器人</p>
+<p>仅具备基础对话能力，依靠关键词匹配和预设规则应答，适合标准化客服、简单问答，无法深度推理。</p>
+</li>
+<li>
+<p>第 2 层：推理器（当前主流阶段）</p>
+<p>拥有基本逻辑推理，可理解复杂语义、处理多步骤任务（如编程、数学解题），能主动分析信息，代表 AI 从被动响应转向主动思考。</p>
+</li>
+<li>
+<p>第 3 层：智能体</p>
+<p>可自主理解复杂指令，在动态环境中独立决策、执行多任务，具备情境感知与自主行动能力，实现高度自动化与个性化服务。</p>
+</li>
+<li>
+<p>第 4 层：创新者</p>
+<p>拥有独立创造与科研能力，能提出新概念、新假设，自主设计实验、验证理论，成为人类的创新与科研伙伴。</p>
+</li>
+<li>
+<p>第 5 层：组织者</p>
+<p>具备统筹管理能力，可协调资源、管理复杂系统与团队，进行战略规划与高效协作，成为系统性的智能决策者。</p>
+</li>
+</ul>
+<h2 id="二prompt">二、Prompt</h2>
+<p>就问下面这些提示词你有没有说过？🤣🤣🤣</p>
+<p><img alt="常见提示词" loading="lazy" decoding="async" fetchpriority="auto" sizes="(min-width: 1146px) 1146px, 100vw"  data-astro-image="constrained" width="1146" height="1497" src="/vento/astro-assets/2-6al47JxX_ZyyFx5.webp" srcset="/vento/astro-assets/2-6al47JxX_kbMSE.webp 640w, /vento/astro-assets/2-6al47JxX_Z1kKFRY.webp 750w, /vento/astro-assets/2-6al47JxX_26Rm42.webp 828w, /vento/astro-assets/2-6al47JxX_1IPqfz.webp 1080w, /vento/astro-assets/2-6al47JxX_ZyyFx5.webp 1146w"></p>
+<h3 id="1需不需要学习prompt">1、需不需要学习Prompt</h3>
+<p>平时我们在使用 AI 的时候就会想着，直接去说你的想法你的需求不就好了，为啥还要学 AI prompt 呢，直接给 AI 对话不就好了，有时候你用了效果不一定很好。下面是不用和有效的用的直观对比：</p>
+<h4 id="11-效率差异主动vs被动">1.1 效率差异（主动vs被动）</h4>
+<p>主动问：如果我们自个能基于基本原理主动给出完整关键信息，就能减少来回交互，提高效率。</p>
+<p>被动问：每次都要 AI 引导我补充信息，会增加沟通成本</p>
+<h4 id="12-质量差异模糊vs精细">1.2 质量差异（模糊vs精细）</h4>
+<p>模糊提问：直接上去说了一通，但是很模糊</p>
+<pre class="astro-code astro-code-themes min-light night-owl" style="background-color:#ffffff;--shiki-dark-bg:#011627;color:#24292eff;--shiki-dark:#d6deeb; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>"帮我写一个搜索框组件。要求：用户每输入一个字都要看到结果，体验要极速，不能卡顿，但为了保护后端，请求次数不能太多。"</span></span></code></pre>
+<p>精细提问+一些例子：添加验收标准的指令</p>
+<p>理由：给 AI 看一个你想要的输入输出示例，比写一千字描述都管用。这是提升效果最立竿见影的技巧</p>
+<pre class="astro-code astro-code-themes min-light night-owl" style="background-color:#ffffff;--shiki-dark-bg:#011627;color:#24292eff;--shiki-dark:#d6deeb; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>用户： "请为我编写一个基于 React + Hooks 的搜索框组件。为了平衡用户体验与服务器压力，请满足以下验收标准：</span></span>
+<span class="line"><span>1. 防抖策略： 使用 300ms 的 Debounce，确保用户停顿后再发请求。</span></span>
+<span class="line"><span>2. 最小长度： 仅在输入字符数 ≥2 时才触发后端 API。</span></span>
+<span class="line"><span>3. 本地缓存： 使用一个简单的 Map 对象存储已搜索过的关键词结果，避免重复请求。</span></span>
+<span class="line"><span>4. 竞态控制： 必须处理异步请求的'竞态条件'，确保页面始终渲染最后一次有效输入的返回结果。</span></span>
+<span class="line"><span>5. 即时性补偿： 虽然请求有防抖，但输入框本身的 UI 必须是零延迟响应的。"</span></span></code></pre>
+<h4 id="13-你能做它做不了的">1.3 你能做它做不了的</h4>
+<h3 id="2如何更好的去提问">2、如何更好的去提问</h3>
+<ul>
+<li>我是谁，处于什么身份</li>
+<li>我要做什么，当前现状如何</li>
+<li>问题相关的上下文和背景有哪些</li>
+<li>我希望最终达到什么效果</li>
+<li>加一些限制</li>
+<li>需求确认</li>
+</ul>
+<h2 id="三选择合适自己的工具">三、选择合适自己的工具</h2>
+<h3 id="1模型的选择">1、模型的选择</h3>
+<p>方式一： 用编译器自带的</p>
+<p>方式二： 自己买喜欢的模型然后导入到编译器中</p>
+<h3 id="2一些好用省token的小技巧">2、一些好用省token的小技巧</h3>
+<ol>
+<li>减少上下文消耗，别开一个对话聊八百件事情</li>
+<li>只贴相关代码，别直接扔文件进去</li>
+<li>定期总结对话，让 AI 记住关键点后清理历史</li>
+<li>多次提交代码，避免幻觉混乱返工</li>
+<li>复杂项目建议固定一个模型，它会更好地理解你的代码风格，防止返工</li>
+<li>遇到某个模型死活搞不定的问题，换一个模型试试 or 换一种 prompt，不要在幻觉中找方案，费时间费 token</li>
+</ol>
+<h2 id="四采用逐步构建的方法">四、采用逐步构建的方法</h2>
+<h3 id="先写文档spec文档开发模式">先写文档（Spec文档开发模式）</h3>
+<h4 id="spec和plan-出现的原因">spec和plan 出现的原因</h4>
+<p>直接问的情况：（这时候你不知道他会直接修改哪些文件，这是一个完全黑盒的形式，你自己提的需求你自己也不明白，因为你考虑的也不是很全面）</p>
+<p><img alt="直接问的情况" loading="lazy" decoding="async" fetchpriority="auto" sizes="(min-width: 1769px) 1769px, 100vw"  data-astro-image="constrained" width="1769" height="844" src="/vento/astro-assets/3-BBPyZu7O_zwN8y.webp" srcset="/vento/astro-assets/3-BBPyZu7O_X0AW2.webp 640w, /vento/astro-assets/3-BBPyZu7O_Z2d3Bok.webp 750w, /vento/astro-assets/3-BBPyZu7O_1azcHR.webp 828w, /vento/astro-assets/3-BBPyZu7O_Z1nKVgi.webp 1080w, /vento/astro-assets/3-BBPyZu7O_Z1kovRD.webp 1280w, /vento/astro-assets/3-BBPyZu7O_QTlIU.webp 1668w, /vento/astro-assets/3-BBPyZu7O_zwN8y.webp 1769w"></p>
+<p>于是，两种模式诞生了，spec 或者 plan 就是通过文档来与你对齐需求，让 AI 按照文档驱动开发，保证准确度</p>
+<p><img alt="spec和plan" loading="lazy" decoding="async" fetchpriority="auto" sizes="(min-width: 1808px) 1808px, 100vw"  data-astro-image="constrained" width="1808" height="1208" src="/vento/astro-assets/4-BBUukOWJ_12vSc6.webp" srcset="/vento/astro-assets/4-BBUukOWJ_ZQFF7t.webp 640w, /vento/astro-assets/4-BBUukOWJ_Zq2UhJ.webp 750w, /vento/astro-assets/4-BBUukOWJ_2o5Not.webp 828w, /vento/astro-assets/4-BBUukOWJ_e7Di4.webp 1080w, /vento/astro-assets/4-BBUukOWJ_1hKgFo.webp 1280w, /vento/astro-assets/4-BBUukOWJ_8S9Xe.webp 1668w, /vento/astro-assets/4-BBUukOWJ_12vSc6.webp 1808w"></p>
+<h4 id="spec和plan-的区别">spec和plan 的区别</h4>
+<p>Spec和Plan两种模式的区别</p>
+<ul>
+<li>Spec 重流程，需求大纲(spec.md)->任务列表(task.md)-> 验收清单(checkList.md)</li>
+<li>Plan 重计划，偏粗粒度，最大的作用是帮你把需求和实现对明白</li>
+<li>Spec 的能力 包括了 Plan，也就是 Spec 可以代替 Plan</li>
+</ul>
+<p><img alt="区别对比" loading="lazy" decoding="async" fetchpriority="auto" sizes="(min-width: 826px) 826px, 100vw"  data-astro-image="constrained" width="826" height="612" src="/vento/astro-assets/5-DNAbeAFq_ZSVuNW.webp" srcset="/vento/astro-assets/5-DNAbeAFq_ZRk96A.webp 640w, /vento/astro-assets/5-DNAbeAFq_Z26GPN7.webp 750w, /vento/astro-assets/5-DNAbeAFq_ZSVuNW.webp 826w"></p>
+<h3 id="增量开发而不是一次性生成">增量开发而不是一次性生成</h3>
+<p>别想着一句话让 AI 把整个功能写完。更好的方式：</p>
+<ol>
+<li>spec 文档</li>
+<li>review 一下思路对不对</li>
+<li>逐步填充具体实现</li>
+<li>每一步都跑一下看看有没有问题</li>
+</ol>
+<p>这样出问题容易快速的定位问题，防止一不小心就跑偏。</p>
+<h3 id="善用报错信息">善用报错信息</h3>
+<p>遇到报错，直接把完整的错误信息贴给 AI，比你自己描述”它报错了”有用 100 倍。包括：</p>
+<ul>
+<li>完整的 error stack</li>
+<li>相关的代码片段</li>
+<li>你做了什么操作触发的</li>
+</ul>
+<h3 id="code-review-让ai来">Code Review 让AI来</h3>
+<p>下面给出一个例子：</p>
+<pre class="astro-code astro-code-themes min-light night-owl" style="background-color:#ffffff;--shiki-dark-bg:#011627;color:#24292eff;--shiki-dark:#d6deeb; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>帮我review一下这段代码，重点看：</span></span>
+<span class="line"><span>1. 有没有潜在的bug</span></span>
+<span class="line"><span>2. 性能有没有问题</span></span>
+<span class="line"><span>3. 有没有更简洁的写法</span></span>
+<span class="line"><span>4. 可维护性怎么样</span></span>
+<span class="line"><span>5. 和其他模块通用部分抽离了没等等</span></span></code></pre>
+<h3 id="掌握有效的调试提示技巧">掌握有效的调试提示技巧</h3>
+<p>与其问”为什么不工作”，不如：</p>
+<ul>
+<li>描述期望的行为</li>
+<li>描述实际的行为</li>
+<li>贴上相关代码和报错</li>
+</ul>
+<h3 id="增加让-ai-写测试用例">增加”让 AI 写测试用例”</h3>
+<ol>
+<li>
+<p>在写代码之前，先让 AI 写单元测试。</p>
+<p>理由：这是防止 AI”幻觉”和”偷懒”的最好办法。先定好测试标准，再让它写代码去通过测试。</p>
+</li>
+<li>
+<p>流程优化：写骨架 → 写测试用例 → 写实现 → 跑测试</p>
+</li>
+</ol>
+<h2 id="五最后">五、最后</h2>
+<p>工具再锋利，也只是你手中的刀；AI 能帮你砍柴，但没法替你决定砍哪片林子。真正值钱的，从来不是你会用多少工具，而是你脑子里对代码的掌控力——懂语言的脾气，摸透设计的套路，吃透业务的门道。</p>
+<p>最后和大家分享一句话：“AI 是放大器，你本身的能力决定了放大器的上限。”</p> </article> <hr class="my-8 border-dashed" data-astro-cid-vj4tpspi> <div class="opacity-80 sm:hidden"><span aria-hidden="true" class="max-sm:hidden">
+|
+</span><a class="space-x-1.5 hover:opacity-75" href="https://github.com/yousef8/astro-paper-i18n/edit/main/src/data/blog/en/分享会—AI编码技巧.md" rel="noopener noreferrer" target="_blank"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" /><path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" /><path d="M16 5l3 3" /></svg><span class="italic max-sm:text-sm sm:inline">Suggest Changes</span></a></div> <ul class="mt-4 mb-8 sm:my-8" data-astro-cid-vj4tpspi> <li class="group inline-block group-hover:cursor-pointer my-1 underline-offset-4"> <a href="/vento/tags/随笔/" class="relative pe-2 text-lg underline decoration-dashed group-hover:-top-0.5 group-hover:text-accent focus-visible:p-1 text-sm" data-astro-transition-scope="astro-36ssibgs-2"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block opacity-80 -me-3.5 size-4"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 9l14 0" /><path d="M5 15l14 0" /><path d="M11 4l-4 16" /><path d="M17 4l-4 16" /></svg>
+&nbsp;<span>随笔</span> </a> </li><li class="group inline-block group-hover:cursor-pointer my-1 underline-offset-4"> <a href="/vento/tags/ai/" class="relative pe-2 text-lg underline decoration-dashed group-hover:-top-0.5 group-hover:text-accent focus-visible:p-1 text-sm" data-astro-transition-scope="astro-36ssibgs-3"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block opacity-80 -me-3.5 size-4"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 9l14 0" /><path d="M5 15l14 0" /><path d="M11 4l-4 16" /><path d="M17 4l-4 16" /></svg>
+&nbsp;<span>AI</span> </a> </li><li class="group inline-block group-hover:cursor-pointer my-1 underline-offset-4"> <a href="/vento/tags/前端/" class="relative pe-2 text-lg underline decoration-dashed group-hover:-top-0.5 group-hover:text-accent focus-visible:p-1 text-sm" data-astro-transition-scope="astro-36ssibgs-4"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block opacity-80 -me-3.5 size-4"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 9l14 0" /><path d="M5 15l14 0" /><path d="M11 4l-4 16" /><path d="M17 4l-4 16" /></svg>
+&nbsp;<span>前端</span> </a> </li><li class="group inline-block group-hover:cursor-pointer my-1 underline-offset-4"> <a href="/vento/tags/效率/" class="relative pe-2 text-lg underline decoration-dashed group-hover:-top-0.5 group-hover:text-accent focus-visible:p-1 text-sm" data-astro-transition-scope="astro-36ssibgs-5"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block opacity-80 -me-3.5 size-4"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 9l14 0" /><path d="M5 15l14 0" /><path d="M11 4l-4 16" /><path d="M17 4l-4 16" /></svg>
+&nbsp;<span>效率</span> </a> </li> </ul> <div id="btt-btn-container" class="fixed end-4 bottom-8 z-50 md:sticky md:end-auto md:float-end md:me-1 translate-y-14 opacity-0 transition duration-500"> <button data-button="back-to-top" class="group relative bg-background px-2 py-1 size-14 rounded-full shadow-xl md:h-8 md:w-fit md:rounded-md md:shadow-none md:bg-background/35 md:bg-clip-padding md:backdrop-blur-lg"> <span id="progress-indicator" class="absolute inset-0 -z-10 block size-14 scale-110 rounded-full bg-transparent md:hidden md:h-8 md:rounded-md"></span> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block rotate-90 md:hidden"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M15 6l-6 6l6 6" /></svg> <span class="sr-only text-sm group-hover:text-accent md:not-sr-only"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-4"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></svg> Back to Top </span> </button> </div> <script data-astro-rerun>
+  /** Scrolls the document to the top when
+   * the "Back to Top" button is clicked. */
+  function backToTop() {
+    const rootElement = document.documentElement;
+    const btnContainer = document.querySelector("#btt-btn-container");
+    const backToTopBtn = document.querySelector("[data-button='back-to-top']");
+    const progressIndicator = document.querySelector("#progress-indicator");
+
+    if (!rootElement || !btnContainer || !backToTopBtn || !progressIndicator)
+      return;
+
+    // Attach click event handler for back-to-top button
+    backToTopBtn.addEventListener("click", () => {
+      document.body.scrollTop = 0; // For Safari
+      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    });
+
+    // Handle button visibility according to scroll position
+    let lastVisible = null;
+    function handleScroll() {
+      const scrollTotal = rootElement.scrollHeight - rootElement.clientHeight;
+      const scrollTop = rootElement.scrollTop;
+      const scrollPercent = Math.floor((scrollTop / scrollTotal) * 100);
+
+      progressIndicator.style.setProperty(
+        "background-image",
+        `conic-gradient(var(--accent), var(--accent) ${scrollPercent}%, transparent ${scrollPercent}%)`
+      );
+
+      const isVisible = scrollTop / scrollTotal > 0.3;
+
+      if (isVisible !== lastVisible) {
+        btnContainer.classList.toggle("opacity-100", isVisible);
+        btnContainer.classList.toggle("translate-y-0", isVisible);
+        btnContainer.classList.toggle("opacity-0", !isVisible);
+        btnContainer.classList.toggle("translate-y-14", !isVisible);
+        lastVisible = isVisible;
+      }
+    }
+
+    let ticking = false;
+    document.addEventListener("scroll", () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  }
+  backToTop();
+</script> <div class="flex flex-none flex-col items-center justify-center gap-1 md:items-start"><span class="italic">Share this post on:</span><div class="text-center"><a href="javascript:(function(){navigator.clipboard.writeText(window.location.href);alert('链接已复制，粘贴到微信发送给朋友吧！');})();https://zhangxiaohh.github.io/vento/posts/ai-coding-tips/" class="group inline-block hover:text-accent scale-90 p-2 hover:rotate-6 sm:p-1" title="复制链接分享"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M16.5 10c3.038 0 5.5 2.015 5.5 4.5c0 1.397 -.778 2.645 -2 3.47l0 2.03l-1.964 -1.178a6.649 6.649 0 0 1 -1.536 .178c-3.038 0 -5.5 -2.015 -5.5 -4.5s2.462 -4.5 5.5 -4.5" /><path d="M11.197 15.698c-.69 .196 -1.43 .302 -2.197 .302a8.008 8.008 0 0 1 -2.612 -.432l-2.388 1.432v-2.801c-1.237 -1.082 -2 -2.564 -2 -4.199c0 -3.314 3.134 -6 7 -6c3.782 0 6.863 2.57 7 5.785l0 .233" /><path d="M10 8h.01" /><path d="M7 8h.01" /><path d="M15 14h.01" /><path d="M18 14h.01" /></svg><span class="sr-only">复制链接分享</span></a><a href="https://connect.qq.com/widget/shareqq/index.html?url=https://zhangxiaohh.github.io/vento/posts/ai-coding-tips/" class="group inline-block hover:text-accent scale-90 p-2 hover:rotate-6 sm:p-1" title="分享到QQ"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M6 9.748a14.716 14.716 0 0 0 11.995 -.052c.275 -9.236 -11.104 -11.256 -11.995 .052" /><path d="M18 10c.984 2.762 1.949 4.765 2 7.153c.014 .688 -.664 1.346 -1.184 .303c-.346 -.696 -.952 -1.181 -1.816 -1.456" /><path d="M17 16c.031 1.831 .147 3.102 -1 4" /><path d="M8 20c-1.099 -.87 -.914 -2.24 -1 -4" /><path d="M6 10c-.783 2.338 -1.742 4.12 -1.968 6.43c-.217 2.227 .716 1.644 1.16 .917c.296 -.487 .898 -.934 1.808 -1.347" /><path d="M15.898 13l-.476 -2" /><path d="M8 20l-1.5 1c-.5 .5 -.5 1 .5 1h10c1 0 1 -.5 .5 -1l-1.5 -1" /><path d="M12.75 7a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M9.25 7a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg><span class="sr-only">分享到QQ</span></a><a href="mailto:?subject=来看看这篇有趣的文章&#38;body=我发现了一篇很棒的文章，分享给你：https://zhangxiaohh.github.io/vento/posts/ai-coding-tips/" class="group inline-block hover:text-accent scale-90 p-2 hover:rotate-6 sm:p-1" title="通过邮件分享"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg><span class="sr-only">通过邮件分享</span></a></div></div> <hr class="my-6 border-dashed" data-astro-cid-vj4tpspi> <!-- Previous/Next Post Buttons --> <div data-pagefind-ignore class="grid grid-cols-1 gap-6 sm:grid-cols-2" data-astro-cid-vj4tpspi> <a href="/vento/posts/ai-core-concepts-series" class="flex w-full gap-1 hover:opacity-75" data-astro-cid-vj4tpspi> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block flex-none rtl:rotate-180" data-astro-cid-vj4tpspi="true"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M15 6l-6 6l6 6" /></svg> <div data-astro-cid-vj4tpspi> <span data-astro-cid-vj4tpspi>Previous Post</span> <div class="text-sm text-accent/85" data-astro-cid-vj4tpspi>AI核心概念大串联</div> </div> </a> <a href="/vento/posts/react-component-communication" class="flex w-full justify-end gap-1 text-right hover:opacity-75 sm:col-start-2" data-astro-cid-vj4tpspi> <div data-astro-cid-vj4tpspi> <span data-astro-cid-vj4tpspi>Next Post</span> <div class="text-sm text-accent/85" data-astro-cid-vj4tpspi>React组件通信</div> </div> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block flex-none rtl:rotate-180" data-astro-cid-vj4tpspi="true"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M9 6l6 6l-6 6" /></svg> </a> </div> </main> <footer class="w-full mt-auto"> <div class="mx-auto max-w-app px-0"> <hr class="border-border" aria-hidden="true"> </div> <div class="flex flex-col items-center justify-between py-6 sm:flex-row-reverse sm:py-4"> <div class="flex-wrap justify-center gap-1 flex" data-astro-cid-upu6fzxr> <a href="https://github.com/zhangxiaohh" class="group inline-block hover:text-accent p-2 hover:rotate-6 sm:p-1" title="vento on Github"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110" data-astro-cid-upu6fzxr="true"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" /></svg> <span class="sr-only" data-astro-cid-upu6fzxr> vento on Github </span> </a><button type="button" class="copy-btn focus-outline relative p-2 hover:rotate-6 sm:p-1 cursor-pointer bg-transparent border-none" title="WeChat: vento040624 (点击复制)" data-copy-value="vento040624" data-name="WeChat" data-astro-cid-upu6fzxr> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110" data-astro-cid-upu6fzxr="true"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M16.5 10c3.038 0 5.5 2.015 5.5 4.5c0 1.397 -.778 2.645 -2 3.47l0 2.03l-1.964 -1.178a6.649 6.649 0 0 1 -1.536 .178c-3.038 0 -5.5 -2.015 -5.5 -4.5s2.462 -4.5 5.5 -4.5" /><path d="M11.197 15.698c-.69 .196 -1.43 .302 -2.197 .302a8.008 8.008 0 0 1 -2.612 -.432l-2.388 1.432v-2.801c-1.237 -1.082 -2 -2.564 -2 -4.199c0 -3.314 3.134 -6 7 -6c3.782 0 6.863 2.57 7 5.785l0 .233" /><path d="M10 8h.01" /><path d="M7 8h.01" /><path d="M15 14h.01" /><path d="M18 14h.01" /></svg> <span class="sr-only" data-astro-cid-upu6fzxr> WeChat </span> <span class="copy-tooltip absolute -top-8 left-1/2 -translate-x-1/2 bg-accent text-white text-xs px-2 py-1 rounded opacity-0 transition-opacity pointer-events-none whitespace-nowrap" data-astro-cid-upu6fzxr>
+已复制!
+</span> </button><button type="button" class="copy-btn focus-outline relative p-2 hover:rotate-6 sm:p-1 cursor-pointer bg-transparent border-none" title="QQ: 210567852 (点击复制)" data-copy-value="210567852" data-name="QQ" data-astro-cid-upu6fzxr> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110" data-astro-cid-upu6fzxr="true"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M6 9.748a14.716 14.716 0 0 0 11.995 -.052c.275 -9.236 -11.104 -11.256 -11.995 .052" /><path d="M18 10c.984 2.762 1.949 4.765 2 7.153c.014 .688 -.664 1.346 -1.184 .303c-.346 -.696 -.952 -1.181 -1.816 -1.456" /><path d="M17 16c.031 1.831 .147 3.102 -1 4" /><path d="M8 20c-1.099 -.87 -.914 -2.24 -1 -4" /><path d="M6 10c-.783 2.338 -1.742 4.12 -1.968 6.43c-.217 2.227 .716 1.644 1.16 .917c.296 -.487 .898 -.934 1.808 -1.347" /><path d="M15.898 13l-.476 -2" /><path d="M8 20l-1.5 1c-.5 .5 -.5 1 .5 1h10c1 0 1 -.5 .5 -1l-1.5 -1" /><path d="M12.75 7a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M9.25 7a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg> <span class="sr-only" data-astro-cid-upu6fzxr> QQ </span> <span class="copy-tooltip absolute -top-8 left-1/2 -translate-x-1/2 bg-accent text-white text-xs px-2 py-1 rounded opacity-0 transition-opacity pointer-events-none whitespace-nowrap" data-astro-cid-upu6fzxr>
+已复制!
+</span> </button><button type="button" class="copy-btn focus-outline relative p-2 hover:rotate-6 sm:p-1 cursor-pointer bg-transparent border-none" title="Mail: 210567852@qq.com (点击复制)" data-copy-value="210567852@qq.com" data-name="Mail" data-astro-cid-upu6fzxr> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110" data-astro-cid-upu6fzxr="true"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg> <span class="sr-only" data-astro-cid-upu6fzxr> Mail </span> <span class="copy-tooltip absolute -top-8 left-1/2 -translate-x-1/2 bg-accent text-white text-xs px-2 py-1 rounded opacity-0 transition-opacity pointer-events-none whitespace-nowrap" data-astro-cid-upu6fzxr>
+已复制!
+</span> </button> </div>  <script type="module">function n(){document.querySelectorAll(".copy-btn").forEach(c=>{const e=c.cloneNode(!0);c.parentNode?.replaceChild(e,c),e.addEventListener("click",async d=>{d.preventDefault(),d.stopPropagation();const o=e.getAttribute("data-copy-value"),r=e.getAttribute("data-name")||"";if(o)try{if(navigator.clipboard&&navigator.clipboard.writeText)await navigator.clipboard.writeText(o);else{const t=document.createElement("textarea");t.value=o,t.style.position="fixed",t.style.left="-9999px",document.body.appendChild(t),t.select(),document.execCommand("copy"),document.body.removeChild(t)}const a=e.querySelector(".copy-tooltip");a&&(a.textContent=`${r} 已复制!`,e.classList.add("copied"),setTimeout(()=>{e.classList.remove("copied")},2e3)),console.log(`已复制 ${r}: ${o}`)}catch(a){console.error("复制失败:",a),alert(`复制失败，请手动复制: ${o}`)}})})}document.readyState==="loading"?document.addEventListener("DOMContentLoaded",n):n();document.addEventListener("astro:page-load",n);document.addEventListener("astro:after-swap",n);</script> <div class="my-2 flex flex-col items-center whitespace-nowrap sm:flex-row"> <span>Copyright © 2026 Vento | All rights reserved</span> </div> </div> </footer>  <!-- oneko.js 猫猫跟随鼠标特效 --> <script data-neko-cat="/vento/oneko.gif">
+      const onekoScript = document.createElement('script');
+      onekoScript.src = 'https://cdn.jsdelivr.net/gh/adryd325/oneko.js@main/oneko.js';
+      const currentScript = document.currentScript;
+      const catUrl = currentScript.getAttribute('data-neko-cat');
+      onekoScript.setAttribute('data-cat', catUrl);
+      document.body.appendChild(onekoScript);
+    </script> </body> </html>   <script data-astro-rerun>
+  /** Create a progress indicator
+   *  at the top */
+  function createProgressBar() {
+    // Create the main container div
+    const progressContainer = document.createElement("div");
+    progressContainer.className =
+      "progress-container fixed top-0 z-10 h-1 w-full bg-background";
+
+    // Create the progress bar div
+    const progressBar = document.createElement("div");
+    progressBar.className = "progress-bar h-1 w-0 bg-accent";
+    progressBar.id = "myBar";
+
+    // Append the progress bar to the progress container
+    progressContainer.appendChild(progressBar);
+
+    // Append the progress container to the document body or any other desired parent element
+    document.body.appendChild(progressContainer);
+  }
+  createProgressBar();
+
+  /** Update the progress bar
+   *  when user scrolls */
+  function updateScrollProgress() {
+    document.addEventListener("scroll", () => {
+      const winScroll =
+        document.body.scrollTop || document.documentElement.scrollTop;
+      const height =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      if (document) {
+        const myBar = document.getElementById("myBar");
+        if (myBar) {
+          myBar.style.width = scrolled + "%";
+        }
+      }
+    });
+  }
+  updateScrollProgress();
+
+  /** Attaches links to headings in the document,
+   *  allowing sharing of sections easily */
+  function addHeadingLinks() {
+    const headings = Array.from(
+      document.querySelectorAll("h2, h3, h4, h5, h6")
+    );
+    for (const heading of headings) {
+      heading.classList.add("group");
+      const link = document.createElement("a");
+      link.className =
+        "heading-link ml-2 opacity-0 group-hover:opacity-100 focus:opacity-100";
+      link.href = "#" + heading.id;
+
+      const span = document.createElement("span");
+      span.ariaHidden = "true";
+      span.innerText = "#";
+      link.appendChild(span);
+      heading.appendChild(link);
+    }
+  }
+  addHeadingLinks();
+
+  /** Attaches copy buttons to code blocks in the document,
+   * allowing users to copy code easily. */
+  function attachCopyButtons() {
+    const mainContent = document.querySelector("#main-content");
+    const copyButtonLabel = mainContent?.dataset?.copyString ?? "copy";
+
+    const codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    for (const codeBlock of codeBlocks) {
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      const copyButton = document.createElement("button");
+      copyButton.className =
+        "copy-code absolute right-3 -top-3 rounded bg-muted px-2 py-1 text-xs leading-4 text-foreground font-medium";
+      copyButton.innerHTML = copyButtonLabel;
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      // wrap codebock with relative parent element
+      codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+
+    async function copyCode(block, button) {
+      const code = block.querySelector("code");
+      const text = code?.innerText;
+
+      await navigator.clipboard.writeText(text ?? "");
+
+      // visual feedback that task is completed
+      button.innerText = mainContent?.dataset?.copiedString ?? "Copied";
+
+      setTimeout(() => {
+        button.innerText = copyButtonLabel;
+      }, 700);
+    }
+  }
+  attachCopyButtons();
+
+  /* Go to page start after page swap */
+  document.addEventListener("astro:after-swap", () =>
+    window.scrollTo({ left: 0, top: 0, behavior: "instant" })
+  );
+</script>
