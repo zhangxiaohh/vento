@@ -44,12 +44,21 @@ export default defineConfig({
       wrap: true,
     },
   },
-  vite: {
-    plugins: [tailwindcss()],
-    optimizeDeps: {
-      exclude: ["@resvg/resvg-js"],
+vite: {
+  plugins: [tailwindcss()],
+  optimizeDeps: {
+    exclude: ["@resvg/resvg-js"],
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        // 将 _astro 目录改为 astro-assets，避免 GitHub Pages 404 问题
+        assetFileNames: "astro-assets/[name]-[hash][extname]",
+        chunkFileNames: "astro-assets/[name]-[hash].js",
+      },
     },
   },
+},
   image: {
     responsiveStyles: true,
     layout: "constrained",
