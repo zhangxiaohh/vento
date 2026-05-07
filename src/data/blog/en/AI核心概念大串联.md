@@ -3,7 +3,7 @@ author: vento
 pubDatetime: 2026-05-7T11:11:00Z
 modDatetime: 2026-05-7T11:11:00Z
 title: AI核心概念大串联
-slug: 
+slug: ai-core-concepts-series
 featured: true
 draft: false
 tags:
